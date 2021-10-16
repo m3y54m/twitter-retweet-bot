@@ -1,14 +1,13 @@
 import os
-from dotenv import dotenv_values
+from dotenv import load_dotenv
 
-# search in increasingly higher folders for the ".env" file
-config = dotenv_values(".env") 
+# take environment variables from .env.
+load_dotenv()
 
-# print all environments variables defined in ".env"
-for key, value in config.items():
-    print(key, value)
+# get environment variable BEARER_TOKEN
+bearer_token = os.environ.get("BEARER_TOKEN")
 
 # use curl to get tweet data
-os.system(f'curl -X GET -H "Authorization: Bearer {config["BEARER_TOKEN"]}" "https://api.twitter.com/2/tweets/20"')
+os.system(f'curl -X GET -H "Authorization: Bearer {bearer_token}" "https://api.twitter.com/2/tweets/20"')
 print("")
 
