@@ -21,8 +21,19 @@ def tweet_hello_world():
     api = tweepy.API(auth)
     api.update_status(status="Hello World from Bot!")
 
+def get_tweet_text(tweetId):
+    auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
+    auth.set_access_token(access_token, access_token_secret)
+    api = tweepy.API(auth)
+    status = api.get_status(id=tweetId)
+    return status.user.name, status.text
+    
 # public_tweets = api.home_timeline()
 
 # with open('timeline.txt', 'w') as f:
 #     for tweet in public_tweets:
 #         f.write(tweet.text + "\r\n")
+
+if __name__ == "__main__":
+    username, text = get_tweet_text(20)
+    print(f"{username}: {text}")

@@ -11,8 +11,9 @@ app = Flask(__name__)
 
 @app.route("/")
 def home():
-    bot.tweet_hello_world()
-    return "Hello World from Flask!"
+    #bot.tweet_hello_world()
+    username, text = bot.get_tweet_text(20)
+    return f"{username}: {text}"
 
 if __name__ == "__main__":
     app.run(host="localhost", port=os.environ.get("PORT") or 3456)
