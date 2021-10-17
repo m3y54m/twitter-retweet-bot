@@ -21,13 +21,18 @@ def get_tweet_text(tweetId):
     status = api.get_status(id=tweetId)
     return status.user.name, status.text
 
+def tweet_hello_world():
+    auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
+    auth.set_access_token(access_token, access_token_secret)
+    api = tweepy.API(auth)
+    api.update_status(status="Hello World from Bot!")
 
 app = Flask(__name__)
 
 
 @app.route("/")
 def home():
-    #bot.tweet_hello_world()
+    tweet_hello_world()
     username, text = get_tweet_text(20)
     return f"{username}: {text}"
 
