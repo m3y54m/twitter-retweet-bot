@@ -25,7 +25,7 @@ def tweet_hello_world():
     auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
     auth.set_access_token(access_token, access_token_secret)
     api = tweepy.API(auth)
-    api.update_status(status="Hello World!\nSimJow is born just now!")
+    api.update_status(status="Hello World!\nSimJow is born right now!")
 
 app = Flask(__name__)
 
@@ -37,5 +37,5 @@ def home():
     return f"{username}: {text}"
 
 if __name__ == "__main__":
-    app.debug = True
+    app.debug = False
     app.run(host="localhost", port=os.environ.get("PORT") or 3456)

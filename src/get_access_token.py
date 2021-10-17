@@ -21,5 +21,5 @@ verifier = input("PIN: ").strip()
 
 auth.get_access_token(verifier)
 
-print("ACCESS_TOKEN = '%s'" % auth.access_token)
-print("TOKEN_SECRET = '%s'" % auth.access_token_secret)
+print("ACCESS_TOKEN=%s" % auth.access_token)
+print("ACCESS_TOKEN_SECRET=%s" % auth.access_token_secret)
