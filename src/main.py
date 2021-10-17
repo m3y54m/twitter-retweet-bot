@@ -8,10 +8,18 @@ load_dotenv()
 consumer_key = os.environ.get("CONSUMER_KEY")
 consumer_secret = os.environ.get("CONSUMER_SECRET")
 access_token = os.environ.get("ACCESS_TOKEN")
-token_secret = os.environ.get("TOKEN_SECRET")
+access_token_secret = os.environ.get("ACCESS_TOKEN_SECRET")
 bearer_token = os.environ.get("BEARER_TOKEN")
 
-# use curl to get tweet data
-os.system(f'curl -X GET -H "Authorization: Bearer {bearer_token}" "https://api.twitter.com/2/tweets/20"')
-print("")
 
+import tweepy
+
+auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
+auth.set_access_token(access_token, access_token_secret)
+
+api = tweepy.API(auth)
+
+public_tweets = api.home_timeline()
+for tweet in public_tweets:
+    print(tweet.text)
+    

@@ -27,4 +27,5 @@ curl -X GET -H "Authorization: Bearer <BEARER TOKEN>" "https://api.twitter.com/2
 ## Resources
 
 - [Read key-value pairs from a .env file and set them as environment variables](https://github.com/theskumar/python-dotenv)
+- [Hello Tweepy](https://docs.tweepy.org/en/v3.5.0/getting_started.html)
 
