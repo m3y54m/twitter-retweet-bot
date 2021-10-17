@@ -12,4 +12,4 @@ def home():
     return "Hello World from Flask!"
 
 
-app.run(host="localhost", port=os.environ.get("PORT") or 3456)
+app.run()
