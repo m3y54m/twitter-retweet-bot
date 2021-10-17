@@ -27,6 +27,17 @@ def get_tweet_text(tweetId):
     api = tweepy.API(auth)
     status = api.get_status(id=tweetId)
     return status.user.name, status.text
+
+def get_timeline():
+    auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
+    auth.set_access_token(access_token, access_token_secret)
+    api = tweepy.API(auth)
+    public_tweets = api.home_timeline()
+    timeline_list=[]
+    for tweet in public_tweets:
+        timeline_list.append(tweet.text)
+    return timeline_list
+
     
 # public_tweets = api.home_timeline()
 
@@ -35,5 +46,7 @@ def get_tweet_text(tweetId):
 #         f.write(tweet.text + "\r\n")
 
 if __name__ == "__main__":
-    username, text = get_tweet_text(20)
-    print(f"{username}: {text}")
+    # username, text = get_tweet_text(20)
+    # print(f"{username}: {text}")
+
+    print(get_timeline())
