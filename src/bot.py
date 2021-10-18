@@ -65,34 +65,50 @@ def post_tweet(twitterApi, tweetText):
     return success
 
 
-def get_date_time():
-    # datetime object containing current date and time
-    now = datetime.now()
-    # YY/mm/dd H:M:S
-    return now.strftime("%Y/%m/%d %H:%M:%S")
-
-
-def loop_for_tweets(intervalSeconds):
-
-    twitterApi = twitter_api_authenticate()
-
-    while True:
-        text = (
-            f"Consecutive Test Tweets at {intervalSeconds} Seconds Intervals:\n"
-            + get_date_time()
+class SimJowStream(tweepy.Stream):
+    def __init__(
+        self, consumer_key, consumer_secret, access_token, access_token_secret
+    ):
+        super().__init__(
+            consumer_key, consumer_secret, access_token, access_token_secret
         )
-        # post the tweet to Twitter
-        post_tweet(twitterApi, text)
-        # wait for the interval
-        time.sleep(intervalSeconds)
+
+        self.twitterApi = twitter_api_authenticate()
+        self.myUser = self.twitterApi.get_user(screen_name="SimJow")
+
+    # when a new tweet is posted on Twitter with your filtered specifications
+    def on_status(self, status):
+        # If the user is not myself
+        if status.user.screen_name != self.myUser.screen_name:
+
+            print(f"\n[ SimJowBot ] Found tweet by @{status.user.screen_name}.")
+
+            try:
+                # Like the tweet
+                self.twitterApi.create_favorite(status.id)
+            # Some basic error handling. Will print out why retweet failed, into your terminal.
+            except Exception as error:
+                print(
+                    f"\n[ SimJowBot ] ERROR: Favorite not successful. Reason:\n{error}"
+                )
+            else:
+                print(f"\n[ SimJowBot ] Favorite published successfully.")
+
+            try:
+                # Retweet the tweet
+                self.twitterApi.retweet(status.id)
+            # Some basic error handling. Will print out why retweet failed, into your terminal.
+            except Exception as error:
+                print(
+                    f"\n[ SimJowBot ] ERROR: Retweet not successful. Reason:\n{error}"
+                )
+            else:
+                print(f"\n[ SimJowBot ] Retweet published successfully.")
 
 
 if __name__ == "__main__":
-    # tweet interval in seconds
-    interval = 1
-    # loop_for_tweets(interval)
 
-    hashtagsList = [
+    hashtagsKeywordList = [
         "الکترونیک",
         "رباتیک",
         "آردوینو",
@@ -106,57 +122,17 @@ if __name__ == "__main__":
         "سیمجو",
         "سیم‌جو",
         "سیم_جو",
+        "سیم_جو",
+        "AppleEvent",
     ]
 
-    hashtagSearchString = ""
+    hashtagsFinalList = []
+    for i in range(len(hashtagsKeywordList)):
+        tmpStr = "#" + hashtagsKeywordList.pop()
+        hashtagsFinalList.append(tmpStr)
 
-    for i in range(len(hashtagsList)):
-        if i == 0:
-            hashtagSearchString += "#" + hashtagsList.pop()
-        else:
-            hashtagSearchString += " OR #" + hashtagsList.pop()
-
-
-    twitterApi = twitter_api_authenticate()
-
-    myself = twitterApi.get_user(screen_name="SimJow")
-
-    for tweet in tweepy.Cursor(twitterApi.search_tweets, q=hashtagSearchString, lang="fa").items(
-        10000
-    ):
-        # If the user is not myself
-        if tweet.user.screen_name != myself.screen_name:
-            
-            print(
-                f"\n[ SimJowBot ] Found tweet by @{tweet.user.screen_name}."
-            )
-            try:
-                # Like the tweet
-                twitterApi.create_favorite(tweet.id)
-            # Some basic error handling. Will print out why retweet failed, into your terminal.
-            except Exception as error:
-                print(
-                    f"\n[ SimJowBot ] ERROR: Favorite not successful. Reason:\n{error}"
-                )
-            except StopIteration:
-                break
-            else:
-                print(f"\n[ SimJowBot ] Favorite published successfully.")
-
-            try:
-                # Retweet the tweet
-                twitterApi.retweet(tweet.id)
-            # Some basic error handling. Will print out why retweet failed, into your terminal.
-            except Exception as error:
-                print(
-                    f"\n[ SimJowBot ] ERROR: Retweet not successful. Reason:\n{error}"
-                )
-            except StopIteration:
-                break
-            else:
-                print(f"\n[ SimJowBot ] Retweet published successfully.")
-
-            # Where sleep(10), sleep is measured in seconds.
-            # Change 10 to amount of seconds you want to have in-between retweets.
-            # Read Twitter's rules on automation. Don't spam!
-            time.sleep(interval)
+    # create a tweepy Stream object for real time filtering of latest posted tweets
+    stream = SimJowStream(
+        consumer_key, consumer_secret, access_token, access_token_secret
+    )
+    stream.filter(track=hashtagsFinalList, languages=["fa"])
