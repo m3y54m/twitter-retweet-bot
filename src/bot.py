@@ -81,7 +81,7 @@ class SimJowStream(tweepy.Stream):
         # If the user is not myself
         if status.user.screen_name != self.myUser.screen_name:
 
-            print(f"\n[ SimJowBot ] Found tweet by @{status.user.screen_name}.")
+            print(f"\n[ SimJowBot ] Found tweet with id={status.id} by @{status.user.screen_name}.")
 
             try:
                 # Like the tweet
@@ -121,7 +121,6 @@ if __name__ == "__main__":
         "میکروکنترلر",
         "سیمجو",
         "سیم‌جو",
-        "سیم_جو",
         "سیم_جو",
         "AppleEvent",
     ]
