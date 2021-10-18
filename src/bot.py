@@ -46,7 +46,9 @@ def get_timeline():
 #         f.write(tweet.text + "\r\n")
 
 if __name__ == "__main__":
+    pass
     # username, text = get_tweet_text(20)
     # print(f"{username}: {text}")
 
-    print(get_timeline())
+    #print(get_timeline())
+
