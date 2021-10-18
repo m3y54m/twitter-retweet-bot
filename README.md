@@ -1,6 +1,10 @@
 # SimJow Twitter Bot
 
-[SimJow Bot on Twitter](https://twitter.com/SimJow)
+[SimJow](https://twitter.com/SimJow) is a Twitter bot who looks for Persian tweets on the following topics and retweets them:
+
+- Electronics Hardware Design
+- Robotics
+- Embedded Systems
 
 ## Prerequisites
 
@@ -8,7 +12,7 @@
 pip install -r requirements.txt
 ```
 
-## Examples
+## Twitter API Examples
 
 ```console
 curl -X GET -H "Authorization: Bearer <BEARER TOKEN>" "https://api.twitter.com/2/tweets/20"
