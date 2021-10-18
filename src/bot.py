@@ -81,7 +81,7 @@ class SimJowStream(tweepy.Stream):
         # If the user is not myself
         if status.user.screen_name != self.myUser.screen_name:
 
-            print(f"\n[ SimJowBot ] Found tweet with id={status.id} by @{status.user.screen_name}.")
+            print(f"\n[ SimJowBot ] Found matching tweet https://twitter.com/{status.user.screen_name}/status/{status.id} ")
 
             try:
                 # Like the tweet
@@ -92,7 +92,7 @@ class SimJowStream(tweepy.Stream):
                     f"\n[ SimJowBot ] ERROR: Favorite not successful. Reason:\n{error}"
                 )
             else:
-                print(f"\n[ SimJowBot ] Favorite published successfully.")
+                print(f"[ SimJowBot ] Favorite published successfully.")
 
             try:
                 # Retweet the tweet
@@ -103,7 +103,7 @@ class SimJowStream(tweepy.Stream):
                     f"\n[ SimJowBot ] ERROR: Retweet not successful. Reason:\n{error}"
                 )
             else:
-                print(f"\n[ SimJowBot ] Retweet published successfully.")
+                print(f"[ SimJowBot ] Retweet published successfully.")
 
 
 if __name__ == "__main__":
