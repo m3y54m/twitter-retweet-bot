@@ -34,19 +34,19 @@ def home():
 
 if __name__ == "__main__":
     app.debug = False
-    app.run(host="localhost", port=os.environ.get("PORT") or 3456)
+    # app.run(host="localhost", port=os.environ.get("PORT") or 3456)
 
-    # # tweet interval in seconds
-    # interval = 60
+    # tweet interval in seconds
+    interval = 45
 
-    # while True:
+    while True:
 
-    #     twitterApi = bot.twitter_api_authenticate()
-    #     text = (
-    #         f"Consecutive Test Tweets at {interval} Seconds Interval:\n"
-    #         + get_date_time()
-    #     )
+        twitterApi = bot.twitter_api_authenticate()
+        text = (
+            f"Consecutive Test Tweets at {interval} Seconds Intervals:\n"
+            + get_date_time()
+        )
 
-    #     bot.post_tweet(twitterApi, text)
-    #     # wait for the interval
-    #     time.sleep(interval)
+        bot.post_tweet(twitterApi, text)
+        # wait for the interval
+        time.sleep(interval)
