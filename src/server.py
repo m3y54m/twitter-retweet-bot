@@ -1,10 +1,15 @@
 import os
 import time
 from datetime import datetime
-import bot
 from flask import Flask
 from dotenv import load_dotenv
-
+# import bot.py
+try:
+    # suitable for heroku
+    from . import bot
+except:
+    # suitable for local development
+    import bot
 
 # take environment variables from .env.
 load_dotenv()
