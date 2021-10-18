@@ -1,4 +1,6 @@
 import os
+import time
+from datetime import datetime
 import tweepy
 from dotenv import load_dotenv
 
@@ -63,15 +65,25 @@ def post_tweet(twitterApi, tweetText):
     return success
 
 
-# public_tweets = api.home_timeline()
+def get_date_time():
+    # datetime object containing current date and time
+    now = datetime.now()
+    # dd/mm/YY H:M:S
+    return now.strftime("%Y/%m/%d %H:%M:%S")
 
-# with open('timeline.txt', 'w') as f:
-#     for tweet in public_tweets:
-#         f.write(tweet.text + "\r\n")
 
 if __name__ == "__main__":
-    pass
-    # username, text = get_tweet_text(20)
-    # print(f"{username}: {text}")
+    # tweet interval in seconds
+    interval = 60
 
-    # print(get_timeline())
+    while True:
+
+        twitterApi = twitter_api_authenticate()
+        text = (
+            f"Consecutive Test Tweets at {interval} Seconds Intervals:\n"
+            + get_date_time()
+        )
+
+        post_tweet(twitterApi, text)
+        # wait for the interval
+        time.sleep(interval)

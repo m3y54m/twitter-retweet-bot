@@ -1,8 +1,7 @@
 import os
-import time
-from datetime import datetime
 from flask import Flask
 from dotenv import load_dotenv
+
 # import bot.py
 try:
     # suitable for heroku
@@ -13,13 +12,6 @@ except:
 
 # take environment variables from .env.
 load_dotenv()
-
-
-def get_date_time():
-    # datetime object containing current date and time
-    now = datetime.now()
-    # dd/mm/YY H:M:S
-    return now.strftime("%Y/%m/%d %H:%M:%S")
 
 
 app = Flask(__name__)
@@ -34,19 +26,4 @@ def home():
 
 if __name__ == "__main__":
     app.debug = False
-    # app.run(host="localhost", port=os.environ.get("PORT") or 3456)
-
-    # tweet interval in seconds
-    interval = 45
-
-    while True:
-
-        twitterApi = bot.twitter_api_authenticate()
-        text = (
-            f"Consecutive Test Tweets at {interval} Seconds Intervals:\n"
-            + get_date_time()
-        )
-
-        bot.post_tweet(twitterApi, text)
-        # wait for the interval
-        time.sleep(interval)
+    app.run(host="localhost", port=os.environ.get("PORT") or 3456)
