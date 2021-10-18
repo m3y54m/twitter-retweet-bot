@@ -1,4 +1,6 @@
-# My Twitter API Playground
+# SimJow Twitter Bot
+
+[SimJow Bot on Twitter](https://twitter.com/SimJow)
 
 ## Prerequisites
 

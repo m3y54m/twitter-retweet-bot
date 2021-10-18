@@ -26,7 +26,8 @@ def twitter_api_authenticate():
         api.verify_credentials()
     except Exception as error:
         print(
-            f"\n[ SimJowBot ] An error occurred while attempting to authenticate with the twitter API. Reason:\n{error}")
+            f"\n[ SimJowBot ] An error occurred while attempting to authenticate with the twitter API. Reason:\n{error}"
+        )
         return None
     else:
         return api
@@ -41,7 +42,8 @@ def get_tweet(twitterApi, tweetId):
             status = twitterApi.get_status(id=tweetId)
         except Exception as error:
             print(
-                f"\n[ SimJowBot ] An error occurred while attempting to get the twitter status with id={tweetId}. Reason:\n{error}")
+                f"\n[ SimJowBot ] An error occurred while attempting to get the twitter status with id={tweetId}. Reason:\n{error}"
+            )
         else:
             userName = status.user.name
             tweetText = status.text
@@ -57,7 +59,8 @@ def post_tweet(twitterApi, tweetText):
             twitterApi.update_status(status=tweetText)
         except Exception as error:
             print(
-                f"\n[ SimJowBot ] An error occurred while attempting to update the twitter status. Reason:\n{error}")
+                f"\n[ SimJowBot ] An error occurred while attempting to update the twitter status. Reason:\n{error}"
+            )
         else:
             success = True
 
@@ -77,25 +80,25 @@ app = Flask(__name__)
 @app.route("/")
 def home():
     twitterApi = twitter_api_authenticate()
-    text = "Consecutive Test Tweets, "
-    # post_tweet(twitterApi, get_date_time())
     userName, text = get_tweet(twitterApi, 20)
     return f"{userName}: {text}"
 
 
 if __name__ == "__main__":
-    app.debug = False
+    # app.debug = False
     # app.run(host="localhost", port=os.environ.get("PORT") or 3456)
 
     # tweet interval in seconds
-    interval = 10
+    interval = 60
 
     while True:
 
-        seconds = int(time.time())
+        twitterApi = twitter_api_authenticate()
+        text = (
+            f"Consecutive Test Tweets at {interval} Seconds Interval:\n"
+            + get_date_time()
+        )
         
-        if seconds % interval == 0:
-            twitterApi = twitter_api_authenticate()
-            text = f"Consecutive Test Tweets at {interval} Seconds Interval:\n" + get_date_time()
-            post_tweet(twitterApi, text)
-    
+        post_tweet(twitterApi, text)
+        # wait for the interval
+        time.sleep(interval)
