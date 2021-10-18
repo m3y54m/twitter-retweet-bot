@@ -89,12 +89,20 @@ def loop_for_tweets(intervalSeconds):
 
 if __name__ == "__main__":
     # tweet interval in seconds
-    interval = 0
+    interval = 1
     # loop_for_tweets(interval)
 
     hashtagsList = [
         "الکترونیک",
         "رباتیک",
+        "آردوینو",
+        "arduino",
+        "rasperrypi",
+        "vhdl",
+        "verilog",
+        "pcb",
+        "fpga",
+        "میکروکنترلر",
         "سیمجو",
         "سیم‌جو",
         "سیم_جو",
@@ -114,7 +122,7 @@ if __name__ == "__main__":
     myself = twitterApi.get_user(screen_name="SimJow")
 
     for tweet in tweepy.Cursor(twitterApi.search_tweets, q=hashtagSearchString, lang="fa").items(
-        100
+        10000
     ):
         # If the user is not myself
         if tweet.user.screen_name != myself.screen_name:
