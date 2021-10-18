@@ -1,2 +1,2 @@
 web: gunicorn src.server:app
-run: python src/bot.py
+worker: python src/bot.py
