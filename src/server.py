@@ -88,12 +88,14 @@ if __name__ == "__main__":
     # app.run(host="localhost", port=os.environ.get("PORT") or 3456)
 
     # tweet interval in seconds
-    interval = 60
+    interval = 10
 
     while True:
 
-        twitterApi = twitter_api_authenticate()
-        text = "Consecutive Test Tweets at 1 Minute Intervals:\n" + get_date_time()
-        post_tweet(twitterApi, text)
-        time.sleep(interval)
+        seconds = int(time.time())
+        
+        if seconds % interval == 0:
+            twitterApi = twitter_api_authenticate()
+            text = f"Consecutive Test Tweets at {interval} Seconds Interval:\n" + get_date_time()
+            post_tweet(twitterApi, text)
     
