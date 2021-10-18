@@ -18,7 +18,7 @@ bearer_token = os.environ.get("BEARER_TOKEN")
 def twitter_api_authenticate():
     auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
     auth.set_access_token(access_token, access_token_secret)
-    api = tweepy.API(auth)
+    api = tweepy.API(auth, wait_on_rate_limit=True)
 
     try:
         api.verify_credentials()
@@ -89,29 +89,66 @@ def loop_for_tweets(intervalSeconds):
 
 if __name__ == "__main__":
     # tweet interval in seconds
-    interval = 10
-    #loop_for_tweets(interval)
+    interval = 0
+    # loop_for_tweets(interval)
+
+    hashtagsList = [
+        "الکترونیک",
+        "رباتیک",
+        "سیمجو",
+        "سیم‌جو",
+        "سیم_جو",
+    ]
+
+    hashtagSearchString = ""
+
+    for i in range(len(hashtagsList)):
+        if i == 0:
+            hashtagSearchString += "#" + hashtagsList.pop()
+        else:
+            hashtagSearchString += " OR #" + hashtagsList.pop()
+
 
     twitterApi = twitter_api_authenticate()
 
-    for tweet in tweepy.Cursor(twitterApi.search_tweets, q="#الکترونیک OR #رباتیک").items(5):
+    myself = twitterApi.get_user(screen_name="SimJow")
 
-        print(f"\n[ SimJowBot ] Retweet Bot found tweet by @{tweet.user.screen_name}. Attempting to retweet.")
-        try:
-            # Like the tweet
-            twitterApi.create_favorite(tweet.id)
-            # Retweet the tweet
-            twitterApi.retweet(tweet.id)
-        # Some basic error handling. Will print out why retweet failed, into your terminal.
-        except Exception as error:
-            print(f"\n[ SimJowBot ] ERROR: Retweet not successful. Reason:\n{error}")
-        except StopIteration:
-            break
-        else:
-            print(f"\n[ SimJowBot ] Retweet published successfully.")
-        
-        # Where sleep(10), sleep is measured in seconds.
-        # Change 10 to amount of seconds you want to have in-between retweets.
-        # Read Twitter's rules on automation. Don't spam!
-        time.sleep(interval)
+    for tweet in tweepy.Cursor(twitterApi.search_tweets, q=hashtagSearchString, lang="fa").items(
+        100
+    ):
+        # If the user is not myself
+        if tweet.user.screen_name != myself.screen_name:
+            
+            print(
+                f"\n[ SimJowBot ] Found tweet by @{tweet.user.screen_name}."
+            )
+            try:
+                # Like the tweet
+                twitterApi.create_favorite(tweet.id)
+            # Some basic error handling. Will print out why retweet failed, into your terminal.
+            except Exception as error:
+                print(
+                    f"\n[ SimJowBot ] ERROR: Favorite not successful. Reason:\n{error}"
+                )
+            except StopIteration:
+                break
+            else:
+                print(f"\n[ SimJowBot ] Favorite published successfully.")
 
+            try:
+                # Retweet the tweet
+                twitterApi.retweet(tweet.id)
+            # Some basic error handling. Will print out why retweet failed, into your terminal.
+            except Exception as error:
+                print(
+                    f"\n[ SimJowBot ] ERROR: Retweet not successful. Reason:\n{error}"
+                )
+            except StopIteration:
+                break
+            else:
+                print(f"\n[ SimJowBot ] Retweet published successfully.")
+
+            # Where sleep(10), sleep is measured in seconds.
+            # Change 10 to amount of seconds you want to have in-between retweets.
+            # Read Twitter's rules on automation. Don't spam!
+            time.sleep(interval)
