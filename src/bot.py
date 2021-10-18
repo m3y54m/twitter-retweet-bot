@@ -68,22 +68,28 @@ def post_tweet(twitterApi, tweetText):
 def get_date_time():
     # datetime object containing current date and time
     now = datetime.now()
-    # dd/mm/YY H:M:S
+    # YY/mm/dd H:M:S
     return now.strftime("%Y/%m/%d %H:%M:%S")
 
+def loop_for_tweets(intervalSeconds):
+    
+    twitterApi = twitter_api_authenticate()
+
+    while True:
+        text = (
+            f"Consecutive Test Tweets at {intervalSeconds} Seconds Intervals:\n"
+            + get_date_time()
+        )
+        # post the tweet to Twitter
+        post_tweet(twitterApi, text)
+        # wait for the interval
+        time.sleep(intervalSeconds)
 
 if __name__ == "__main__":
     # tweet interval in seconds
-    interval = 60
+    # interval = 60
+    # loop_for_tweets(interval)
 
-    while True:
-
-        twitterApi = twitter_api_authenticate()
-        text = (
-            f"Consecutive Test Tweets at {interval} Seconds Intervals:\n"
-            + get_date_time()
-        )
-
-        post_tweet(twitterApi, text)
-        # wait for the interval
-        time.sleep(interval)
+    twitterApi = twitter_api_authenticate()
+    # First Persian tweet
+    post_tweet(twitterApi, "اولین توییت فارسی سیم‌جُو!")
