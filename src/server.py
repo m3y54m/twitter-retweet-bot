@@ -1,4 +1,5 @@
 import os
+import time
 from datetime import datetime
 import tweepy
 from flask import Flask
@@ -76,11 +77,23 @@ app = Flask(__name__)
 @app.route("/")
 def home():
     twitterApi = twitter_api_authenticate()
-    post_tweet(twitterApi, get_date_time())
+    text = "Consecutive Test Tweets, "
+    # post_tweet(twitterApi, get_date_time())
     userName, text = get_tweet(twitterApi, 20)
     return f"{userName}: {text}"
 
 
 if __name__ == "__main__":
     app.debug = False
-    app.run(host="localhost", port=os.environ.get("PORT") or 3456)
+    # app.run(host="localhost", port=os.environ.get("PORT") or 3456)
+
+    # tweet interval in seconds
+    interval = 60
+
+    while True:
+
+        twitterApi = twitter_api_authenticate()
+        text = "Consecutive Test Tweets at 1 Minute Intervals:\n" + get_date_time()
+        post_tweet(twitterApi, text)
+        time.sleep(interval)
+    
