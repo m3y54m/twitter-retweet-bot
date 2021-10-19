@@ -81,7 +81,9 @@ class SimJowStream(tweepy.Stream):
         # If the user is not myself
         if status.user.screen_name != self.myUser.screen_name:
 
-            print(f"\n[ SimJowBot ] Found a matching tweet https://twitter.com/{status.user.screen_name}/status/{status.id} ")
+            print(
+                f"\n[ SimJowBot ] Found a matching tweet https://twitter.com/{status.user.screen_name}/status/{status.id} "
+            )
 
             try:
                 # Like the tweet
@@ -116,9 +118,11 @@ if __name__ == "__main__":
         "امبدد",
         "آردوینو",
         "Arduino",
-        "RasperryPi",
+        "RaspberryPi",
         "Digilent",
         "رزبری_پای",
+        "رزپری_پای",
+        "رسپری_پای",
         "VHDL",
         "HDL",
         "Verilog",
@@ -137,8 +141,7 @@ if __name__ == "__main__":
         "Altium",
         "AltiumDesigner",
         "PCB",
-        "PCBDesign"
-        "آلتیوم",
+        "PCBDesign" "آلتیوم",
         "آلتیوم_دیزاینر",
         "Vivado",
         "Xilinx",
