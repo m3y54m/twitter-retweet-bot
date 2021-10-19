@@ -221,6 +221,9 @@ if __name__ == "__main__":
     # Add keywords to track list
     trackList.extend(keywordsList)
 
+    # Add mentions to track list
+    trackList.extend(mentionsList)
+
     # create a tweepy Stream object for real time filtering of latest posted tweets
     stream = SimJowStream(
         consumer_key, consumer_secret, access_token, access_token_secret
