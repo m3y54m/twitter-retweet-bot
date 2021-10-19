@@ -188,6 +188,12 @@ if __name__ == "__main__":
         "Snapdragon",
         "TSMC",
         "Chipset",
+        "USB",
+        "HDMI",
+        "PCI",
+        "UART",
+        "USART",
+        "پورت سریال",
     ]
 
     hashtagsList = [
