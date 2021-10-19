@@ -85,9 +85,9 @@ class SimJowStream(tweepy.Stream):
                 f"\n[ SimJowBot ] Found a matching tweet https://twitter.com/{status.user.screen_name}/status/{status.id} "
             )
             # Retweet the found tweet (status)
-            # self.retweet(status)
+            self.retweet(status)
             # Like the found tweet (status)
-            # self.like(status)
+            self.like(status)
 
     def retweet(self, status):
         try:
