@@ -1,5 +1,6 @@
 import os
 from flask import Flask
+from flask import Response
 from dotenv import load_dotenv
 
 # import bot.py
@@ -23,6 +24,10 @@ def home():
     userName, text = bot.get_tweet(twitterApi, 20)
     return f"{userName}: {text}"
 
+@app.route("/wakemydyno.txt")
+def get_text():
+    content = "God bless Heroku!"
+    return Response(content, mimetype="text/plain")
 
 if __name__ == "__main__":
     app.debug = False

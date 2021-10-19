@@ -44,7 +44,5 @@ curl -X GET -H "Authorization: Bearer <BEARER TOKEN>" "https://api.twitter.com/2
 - [Relative imports - ModuleNotFoundError: No module named x](https://stackoverflow.com/questions/43728431/relative-imports-modulenotfounderror-no-module-named-x)
 - [Heroku: The Procfile](https://devcenter.heroku.com/articles/procfile)
 - [Twitter Retweet Bot using Python & Tweepy](https://github.com/0xGrimnir/Simple-Retweet-Bot)
-  
-## Logo
-
-<a href='https://www.freepik.com/vectors/technology'>Technology vector created by catalyststuff - www.freepik.com</a>
+- [Wake my Dyno!](http://wakemydyno.com/)
+- [How do I allow a file to be viewed?](https://askto.pro/question/how-do-i-allow-a-file-to-be-viewed)
