@@ -46,3 +46,4 @@ curl -X GET -H "Authorization: Bearer <BEARER TOKEN>" "https://api.twitter.com/2
 - [Twitter Retweet Bot using Python & Tweepy](https://github.com/0xGrimnir/Simple-Retweet-Bot)
 - [Wake my Dyno!](http://wakemydyno.com/)
 - [How do I allow a file to be viewed?](https://askto.pro/question/how-do-i-allow-a-file-to-be-viewed)
+- [Filter realtime Tweets](https://developer.twitter.com/en/docs/twitter-api/v1/tweets/filter-realtime/guides/basic-stream-parameters)

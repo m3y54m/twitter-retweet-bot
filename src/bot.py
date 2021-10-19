@@ -84,45 +84,61 @@ class SimJowStream(tweepy.Stream):
             print(
                 f"\n[ SimJowBot ] Found a matching tweet https://twitter.com/{status.user.screen_name}/status/{status.id} "
             )
+            # Retweet the found tweet (status)
+            # self.retweet(status)
+            # Like the found tweet (status)
+            # self.like(status)
 
-            try:
-                # Like the tweet
-                self.twitterApi.create_favorite(status.id)
-            # Some basic error handling. Will print out why retweet failed, into your terminal.
-            except Exception as error:
-                print(
-                    f"\n[ SimJowBot ] ERROR: Favorite was not successful. Reason:\n{error}"
-                )
-            else:
-                print(f"[ SimJowBot ] Favorited successfully.")
+    def retweet(self, status):
+        try:
+            # Retweet the tweet
+            self.twitterApi.retweet(status.id)
+        # Some basic error handling. Will print out why retweet failed, into your terminal.
+        except Exception as error:
+            print(f"[ SimJowBot ] ERROR: Retweet was not successful. Reason:\n{error}")
+        else:
+            print(f"[ SimJowBot ] Retweeted successfully.")
 
-            try:
-                # Retweet the tweet
-                self.twitterApi.retweet(status.id)
-            # Some basic error handling. Will print out why retweet failed, into your terminal.
-            except Exception as error:
-                print(
-                    f"\n[ SimJowBot ] ERROR: Retweet was not successful. Reason:\n{error}"
-                )
-            else:
-                print(f"[ SimJowBot ] Retweeted successfully.")
+    def like(self, status):
+        try:
+            # Like the tweet
+            self.twitterApi.create_favorite(status.id)
+        # Some basic error handling. Will print out why retweet failed, into your terminal.
+        except Exception as error:
+            print(f"[ SimJowBot ] ERROR: Favorite was not successful. Reason:\n{error}")
+        else:
+            print(f"[ SimJowBot ] Favorited successfully.")
 
 
 if __name__ == "__main__":
 
-    hashtagsKeywordList = [
-        "الکترونیک",
+    keywordsList = [
+        "مهندسی الکترونیک",
+        "بورد الکترونیکی",
+        "مدار الکترونیکی",
+        "برد الکترونیکی",
+        "سخت افزار کامپیوتر",
+        "سخت‌افزار کامپیوتر",
+        "معماری کامپیوتر",
         "رباتیک",
         "ربات",
         "مکاترونیک",
         "امبدد",
-        "آردوینو",
+        "سیستم های نهفته",
+        "سیستم های توکار",
+        "سیستم‌های نهفته",
+        "سیستم‌های توکار",
         "Arduino",
-        "RaspberryPi",
+        "آردوینو",
+        "Raspberry Pi",
         "Digilent",
-        "رزبری_پای",
-        "رزپری_پای",
-        "رسپری_پای",
+        "دیجیلنت",
+        "رزبری پای",
+        "رزپری پای",
+        "رسپری پای",
+        "رزبری‌پای",
+        "رزپری‌پای",
+        "رسپری‌پای",
         "VHDL",
         "HDL",
         "Verilog",
@@ -132,28 +148,34 @@ if __name__ == "__main__":
         "ریزپردازنده",
         "Microcontroller",
         "Microprocessor",
-        "آی_سی",
-        "AppleEvent",
         "Intel",
+        "اینتل",
+        "Apple",
+        "اپل",
         "AMD",
         "Nvidia",
+        "انویدیا",
         "Embedded",
-        "EmbeddedLinux",
+        "Embedded Linux",
+        "Yocto",
+        "یوکتو",
+        "یاکتو",
         "Electronics",
         "Robotics",
         "Mechatronics",
         "Altium",
-        "AltiumDesigner",
+        "Altium Designer",
         "PCB",
-        "PCBDesign",
+        "PCB Design",
         "آلتیوم",
-        "آلتیوم_دیزاینر",
+        "آلتیوم دیزاینر",
         "Vivado",
         "Xilinx",
         "زایلینکس",
         "Altera",
         "Zynq",
-        "اف_پی_جی_ای",
+        "اف پی جی ای",
+        "اف‌پی‌جی‌ای",
         "کوادکوپتر",
         "کوادروتور",
         "پردازنده",
@@ -171,13 +193,36 @@ if __name__ == "__main__":
         "Chipset",
     ]
 
-    hashtagsFinalList = []
-    for i in range(len(hashtagsKeywordList)):
-        tmpStr = "#" + hashtagsKeywordList.pop()
-        hashtagsFinalList.append(tmpStr)
+    hashtagsList = [
+        "الکترونیک",
+        "AppleEvent",
+        "RaspberryPi",
+        "آی_سی",
+        "رزبری_پای",
+        "رزپری_پای",
+        "رسپری_پای",
+        "اف_پی_جی_ای",
+        "آلتیوم_دیزاینر",
+        "PCBDesign",
+        "AltiumDesigner",
+        "EmbeddedLinux",
+    ]
+
+    mentionsList = [
+        "@SimJow",
+    ]
+
+    # Add hashtags to track list with # added at the beginning of each item
+    trackList = []
+    for i in range(len(hashtagsList)):
+        tmpStr = "#" + hashtagsList.pop()
+        trackList.append(tmpStr)
+
+    # Add keywords to track list
+    trackList.extend(keywordsList)
 
     # create a tweepy Stream object for real time filtering of latest posted tweets
     stream = SimJowStream(
         consumer_key, consumer_secret, access_token, access_token_secret
     )
-    stream.filter(track=hashtagsFinalList, languages=["fa"])
+    stream.filter(track=trackList, languages=["fa"])
