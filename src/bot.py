@@ -1,5 +1,4 @@
 import os
-import time
 from datetime import datetime
 import tweepy
 from dotenv import load_dotenv
@@ -72,22 +71,24 @@ class SimJowStream(tweepy.Stream):
         super().__init__(
             consumer_key, consumer_secret, access_token, access_token_secret
         )
-
         self.twitterApi = twitter_api_authenticate()
         self.myUser = self.twitterApi.get_user(screen_name="SimJow")
 
     # when a new tweet is posted on Twitter with your filtered specifications
     def on_status(self, status):
-        # If the user is not myself
-        if status.user.screen_name != self.myUser.screen_name:
 
-            print(
-                f"\n[ SimJowBot ] Found a matching tweet https://twitter.com/{status.user.screen_name}/status/{status.id} "
-            )
-            # Retweet the found tweet (status)
-            self.retweet(status)
-            # Like the found tweet (status)
-            self.like(status)
+        # If the found tweet is not a reply to another tweet
+        if self.is_not_a_reply(status):
+            # If the user is not myself
+            if status.user.screen_name != self.myUser.screen_name:
+
+                print(
+                    f"\n[ SimJowBot ] Found a matching tweet https://twitter.com/{status.user.screen_name}/status/{status.id} "
+                )
+                # Retweet the found tweet (status)
+                self.retweet(status)
+                # Like the found tweet (status)
+                self.like(status)
 
     def retweet(self, status):
         try:
@@ -108,6 +109,12 @@ class SimJowStream(tweepy.Stream):
             print(f"[ SimJowBot ] ERROR: Favorite was not successful. Reason:\n{error}")
         else:
             print(f"[ SimJowBot ] Favorited successfully.")
+
+    def is_not_a_reply(self, status):
+        if status.in_reply_to_status_id == None:
+            return True
+        else:
+            return False
 
 
 if __name__ == "__main__":
@@ -172,6 +179,8 @@ if __name__ == "__main__":
         "گرافیکی GTX",
         "Embedded",
         "Embedded Linux",
+        "UBoot",
+        "U-Boot",
         "Yocto",
         "یوکتو",
         "یاکتو",
