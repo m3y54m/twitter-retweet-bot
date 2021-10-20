@@ -138,9 +138,9 @@ if __name__ == "__main__":
         "آردوینو",
         "Raspberry Pi",
         "Orange Pi",
-        "BeagleBone",        
+        "BeagleBone",
         "Zybo",
-        "ZC706",   
+        "ZC706",
         "Digilent",
         "دیجیلنت",
         "رزبری پای",
@@ -218,11 +218,7 @@ if __name__ == "__main__":
         "پورت سریال",
         "ارتباط سریال",
         "رابط سریال",
-        "Core i3"
-        "Core i5"
-        "Core i7"
-        "Core i9"
-        "M1 اپل",
+        "Core i3" "Core i5" "Core i7" "Core i9" "M1 اپل",
         "M1 پردازنده",
         "M1 Max",
         "M1 Pro",
