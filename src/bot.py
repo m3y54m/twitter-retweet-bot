@@ -162,8 +162,6 @@ if __name__ == "__main__":
         "ریزپردازنده",
         "Microcontroller",
         "Microprocessor",
-        "Intel",
-        "اینتل",
         "Ryzen",
         "Nvidia",
         "انویدیا",
