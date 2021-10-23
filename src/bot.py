@@ -245,7 +245,6 @@ if __name__ == "__main__":
 
     hashtagsList = [
         "الکترونیک",
-        "ربات",
         "RaspberryPi",
         "OrangePi",
         "آی_سی",
