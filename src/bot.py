@@ -104,17 +104,14 @@ class SimJowStream(tweepy.Stream):
         try:
             # Like the tweet
             self.twitterApi.create_favorite(status.id)
-        # Some basic error handling. Will print out why retweet failed, into your terminal.
+        # Some basic error handling. Will print out why favorite failed, into your terminal.
         except Exception as error:
             print(f"[ SimJowBot ] ERROR: Favorite was not successful. Reason:\n{error}")
         else:
             print(f"[ SimJowBot ] Favorited successfully.")
 
     def is_not_a_reply(self, status):
-        if status.in_reply_to_status_id == None:
-            return True
-        else:
-            return False
+        return not status.in_reply_to_status_id
 
 
 if __name__ == "__main__":
