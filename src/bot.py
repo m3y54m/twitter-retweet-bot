@@ -111,7 +111,13 @@ class SimJowStream(tweepy.Stream):
             print(f"[ SimJowBot ] Favorited successfully.")
 
     def is_not_a_reply(self, status):
-        return not status.in_reply_to_status_id
+        if hasattr(status, "retweeted_status"):
+            # Check the original tweet if it was a retweet
+            originalStatus = self.twitterApi.get_status(id=status.retweeted_status.id)
+            return not originalStatus.in_reply_to_status_id
+        else:
+            # Check the tweet itself
+            return not status.in_reply_to_status_id
 
 
 if __name__ == "__main__":
