@@ -230,6 +230,7 @@ if __name__ == "__main__":
         "UBoot",
         "U-Boot",
         "Yocto",
+        "Buildroot",        
         "Electronics",
         "Robotics",
         "Mechatronics",
@@ -360,9 +361,6 @@ if __name__ == "__main__":
     ]
 
     hashtagsList = [
-        "الکترونیک",
-        "مکاترونیک",
-        "آی_سی",
         "رزبری_پای",
         "رزپری_پای",
         "رسپری_پای",
