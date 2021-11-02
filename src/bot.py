@@ -265,7 +265,6 @@ if __name__ == "__main__":
         "Snapdragon",
         "TSMC",
         "Chipset",
-        "چیپست",
         "پورت USB",
         "پورت HDMI",
         "پورت PCI",
