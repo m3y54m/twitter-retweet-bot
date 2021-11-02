@@ -368,9 +368,6 @@ if __name__ == "__main__":
         "رزبری_پای",
         "رزپری_پای",
         "رسپری_پای",
-        "PCBDesign",
-        "AltiumDesigner",
-        "EmbeddedLinux",
     ]
 
     mentionsList = [
@@ -384,10 +381,10 @@ if __name__ == "__main__":
         trackList.append(tmpStr)
 
     # Add keywords to track list
-    trackList.extend(keywordsList)
+    #trackList.extend(keywordsList)
 
     # Add mentions to track list
-    trackList.extend(mentionsList)
+    #trackList.extend(mentionsList)
 
     # create a tweepy Stream object for real time filtering of latest posted tweets
     stream = SimJowStream(
