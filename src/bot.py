@@ -366,24 +366,20 @@ if __name__ == "__main__":
     ]
 
     hashtagsList = [
-        "رزبری_پای",
-        "رزپری_پای",
-        "رسپری_پای",
+        "#رزبری_پای",
+        "#رزپری_پای",
+        "#رسپری_پای",
     ]
 
     mentionsList = [
         "@SimJow",
     ]
 
-    # Add hashtags to track list with # added at the beginning of each item
     trackList = []
-    for i in range(len(hashtagsList)):
-        tmpStr = "#" + hashtagsList.pop()
-        trackList.append(tmpStr)
-
     # Add keywords to track list
-    #trackList.extend(keywordsList)
-
+    trackList.extend(keywordsList)
+    # Add hashtags to track list
+    trackList.extend(hashtagsList)
     # Add mentions to track list
     #trackList.extend(mentionsList)
 
