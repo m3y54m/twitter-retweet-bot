@@ -86,16 +86,15 @@ class SimJowStream(tweepy.Stream):
                 # If the user is not blocked
                 if not self.is_user_blocked(status):
                     # Retweet the found tweet (status)
-                    #self.retweet(status)
+                    self.retweet(status)
                     # Like the found tweet (status)
-                    #self.like(status)
-                    print("[ SimJowBot ] GOOD")
+                    self.like(status)
                 else:
-                    print("[ SimJowBot ] User is blocked.")
+                    print("[ SimJowBot ] ERROR: User is blocked.")
             else:
-                print("[ SimJowBot ] It's me!")
+                print("[ SimJowBot ] ERROR: It's me!")
         else:
-            print("[ SimJowBot ] The tweet is a reply.")
+            print("[ SimJowBot ] ERROR: The tweet is a reply.")
 
     def retweet(self, status):
         try:
@@ -107,7 +106,7 @@ class SimJowStream(tweepy.Stream):
                 f"[ SimJowBot ] ERROR: Retweet was not successful. Reason:\n{error}"
             )
         else:
-            print(f"[ SimJowBot ] Retweeted successfully.")
+            print("[ SimJowBot ] Retweeted successfully.")
 
     def like(self, status):
         try:
@@ -119,7 +118,7 @@ class SimJowStream(tweepy.Stream):
                 f"[ SimJowBot ] ERROR: Favorite was not successful. Reason:\n{error}"
             )
         else:
-            print(f"[ SimJowBot ] Favorited successfully.")
+            print("[ SimJowBot ] Favorited successfully.")
 
     def is_a_reply(self, status):
         if hasattr(status, "retweeted_status"):
@@ -134,8 +133,14 @@ class SimJowStream(tweepy.Stream):
     def is_user_blocked(self, status):
 
         blockedIdsList = self.twitterApi.get_blocked_ids()
+        print("[ SimJowBot ] Block list:")
+        print(blockedIdsList)
 
-        if status.user.id in blockedIdsList:
-            return True
+        if hasattr(status, "retweeted_status"):
+            # Check the original tweet if it was a retweet
+            originalStatus = self.twitterApi.get_status(
+                id=status.retweeted_status.id)
+
+            return originalStatus.user.id in blockedIdsList
         else:
-            return False
+            return status.user.id in blockedIdsList
