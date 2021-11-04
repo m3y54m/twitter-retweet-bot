@@ -133,8 +133,6 @@ class SimJowStream(tweepy.Stream):
     def is_user_blocked(self, status):
 
         blockedIdsList = self.twitterApi.get_blocked_ids()
-        print("[ SimJowBot ] Block list:")
-        print(blockedIdsList)
 
         if hasattr(status, "retweeted_status"):
             # Check the original tweet if it was a retweet
