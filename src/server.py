@@ -20,7 +20,7 @@ def home():
 
 
 # Wake my Heroku dyno by wakemydyno.com
-@app.route("/wakemydyno.txt")
+@app.route("/wakeup")
 def get_text():
     content = "I'm alive!"
     return Response(content, mimetype="text/plain")
