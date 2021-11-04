@@ -19,7 +19,7 @@ def home():
     return f"{userName}: {text}"
 
 
-# Wake my Heroku dyno by wakemydyno.com
+# Wake up my bot
 @app.route("/wakeup")
 def get_text():
     content = "I'm alive!"
