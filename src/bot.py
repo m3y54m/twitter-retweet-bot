@@ -1,5 +1,4 @@
 import os
-from datetime import datetime
 import tweepy
 from dotenv import load_dotenv
 
@@ -7,11 +6,11 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # get environment variables for Twitter API
-consumer_key = os.environ.get("CONSUMER_KEY")
-consumer_secret = os.environ.get("CONSUMER_SECRET")
-access_token = os.environ.get("ACCESS_TOKEN")
-access_token_secret = os.environ.get("ACCESS_TOKEN_SECRET")
-bearer_token = os.environ.get("BEARER_TOKEN")
+consumer_key = os.environ["CONSUMER_KEY"]
+consumer_secret = os.environ["CONSUMER_SECRET"]
+access_token = os.environ["ACCESS_TOKEN"]
+access_token_secret = os.environ["ACCESS_TOKEN_SECRET"]
+bearer_token = os.environ["BEARER_TOKEN"]
 
 
 def twitter_api_authenticate():
