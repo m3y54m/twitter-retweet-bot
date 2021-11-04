@@ -17,7 +17,7 @@ def twitter_api_authenticate():
     auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
     auth.set_access_token(access_token, access_token_secret)
     api = tweepy.API(auth, wait_on_rate_limit=True)
-    
+
     try:
         api.verify_credentials()
     except Exception as error:
@@ -64,32 +64,38 @@ def post_tweet(twitterApi, tweetText):
 
 
 class SimJowStream(tweepy.Stream):
-    def __init__(
-        self, consumer_key, consumer_secret, access_token, access_token_secret
-    ):
-        super().__init__(
-            consumer_key, consumer_secret, access_token, access_token_secret
-        )
+    def __init__(self, consumer_key, consumer_secret, access_token,
+                 access_token_secret):
+        super().__init__(consumer_key, consumer_secret, access_token,
+                         access_token_secret)
         self.twitterApi = twitter_api_authenticate()
         self.myUser = self.twitterApi.get_user(screen_name="SimJow")
+        print(f"\n[ SimJowBot ] SimJow is running.")
 
     # when a new tweet is posted on Twitter with your filtered specifications
     def on_status(self, status):
 
+        print(
+            f"\n[ SimJowBot ] Found a matching tweet https://twitter.com/{status.user.screen_name}/status/{status.id} "
+        )
+
         # If the found tweet is not a reply to another tweet
-        if self.is_not_a_reply(status):
+        if not self.is_a_reply(status):
             # If the user is not myself
             if status.user.screen_name != self.myUser.screen_name:
                 # If the user is not blocked
-                if self.is_user_blocked(status):
-
-                    print(
-                        f"\n[ SimJowBot ] Found a matching tweet https://twitter.com/{status.user.screen_name}/status/{status.id} "
-                    )
+                if not self.is_user_blocked(status):
                     # Retweet the found tweet (status)
                     #self.retweet(status)
                     # Like the found tweet (status)
                     #self.like(status)
+                    print("[ SimJowBot ] GOOD")
+                else:
+                    print("[ SimJowBot ] User is blocked.")
+            else:
+                print("[ SimJowBot ] It's me!")
+        else:
+            print("[ SimJowBot ] The tweet is a reply.")
 
     def retweet(self, status):
         try:
@@ -97,7 +103,9 @@ class SimJowStream(tweepy.Stream):
             self.twitterApi.retweet(status.id)
         # Some basic error handling. Will print out why retweet failed, into your terminal.
         except Exception as error:
-            print(f"[ SimJowBot ] ERROR: Retweet was not successful. Reason:\n{error}")
+            print(
+                f"[ SimJowBot ] ERROR: Retweet was not successful. Reason:\n{error}"
+            )
         else:
             print(f"[ SimJowBot ] Retweeted successfully.")
 
@@ -107,26 +115,27 @@ class SimJowStream(tweepy.Stream):
             self.twitterApi.create_favorite(status.id)
         # Some basic error handling. Will print out why favorite failed, into your terminal.
         except Exception as error:
-            print(f"[ SimJowBot ] ERROR: Favorite was not successful. Reason:\n{error}")
+            print(
+                f"[ SimJowBot ] ERROR: Favorite was not successful. Reason:\n{error}"
+            )
         else:
             print(f"[ SimJowBot ] Favorited successfully.")
 
-    def is_not_a_reply(self, status):
+    def is_a_reply(self, status):
         if hasattr(status, "retweeted_status"):
             # Check the original tweet if it was a retweet
-            originalStatus = self.twitterApi.get_status(id=status.retweeted_status.id)
-            return not originalStatus.in_reply_to_status_id
+            originalStatus = self.twitterApi.get_status(
+                id=status.retweeted_status.id)
+            return originalStatus.in_reply_to_status_id
         else:
             # Check the tweet itself
-            return not status.in_reply_to_status_id
+            return status.in_reply_to_status_id
 
     def is_user_blocked(self, status):
 
         blockedIdsList = self.twitterApi.get_blocked_ids()
 
         if status.user.id in blockedIdsList:
-            print(f"\n[ SimJowBot ] User is blocked.")
             return True
         else:
             return False
-            
