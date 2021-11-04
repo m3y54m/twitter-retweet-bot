@@ -17,7 +17,7 @@ def twitter_api_authenticate():
     auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
     auth.set_access_token(access_token, access_token_secret)
     api = tweepy.API(auth, wait_on_rate_limit=True)
-
+    
     try:
         api.verify_credentials()
     except Exception as error:
@@ -80,14 +80,16 @@ class SimJowStream(tweepy.Stream):
         if self.is_not_a_reply(status):
             # If the user is not myself
             if status.user.screen_name != self.myUser.screen_name:
+                # If the user is not blocked
+                if self.is_user_blocked(status):
 
-                print(
-                    f"\n[ SimJowBot ] Found a matching tweet https://twitter.com/{status.user.screen_name}/status/{status.id} "
-                )
-                # Retweet the found tweet (status)
-                self.retweet(status)
-                # Like the found tweet (status)
-                self.like(status)
+                    print(
+                        f"\n[ SimJowBot ] Found a matching tweet https://twitter.com/{status.user.screen_name}/status/{status.id} "
+                    )
+                    # Retweet the found tweet (status)
+                    #self.retweet(status)
+                    # Like the found tweet (status)
+                    #self.like(status)
 
     def retweet(self, status):
         try:
@@ -117,4 +119,14 @@ class SimJowStream(tweepy.Stream):
         else:
             # Check the tweet itself
             return not status.in_reply_to_status_id
+
+    def is_user_blocked(self, status):
+
+        blockedIdsList = self.twitterApi.get_blocked_ids()
+
+        if status.user.id in blockedIdsList:
+            print(f"\n[ SimJowBot ] User is blocked.")
+            return True
+        else:
+            return False
             
