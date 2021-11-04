@@ -30,6 +30,6 @@ def run():
     app.run(host='0.0.0.0', port=os.environ.get("PORT") or 8080)
 
 
-def keep_alive():
+def start_server_thread():
     t = Thread(target=run)
     t.start()
