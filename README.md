@@ -47,3 +47,4 @@ curl -X GET -H "Authorization: Bearer <BEARER TOKEN>" "https://api.twitter.com/2
 - [Wake my Dyno!](http://wakemydyno.com/)
 - [How do I allow a file to be viewed?](https://askto.pro/question/how-do-i-allow-a-file-to-be-viewed)
 - [Filter realtime Tweets](https://developer.twitter.com/en/docs/twitter-api/v1/tweets/filter-realtime/guides/basic-stream-parameters)
+- [Building a Discord Bot with Python and Repl.it](https://www.codementor.io/@garethdwyer/building-a-discord-bot-with-python-and-repl-it-miblcwejz#keeping-our-bot-alive)
