@@ -1,6 +1,7 @@
 import os
 import tweepy
 from dotenv import load_dotenv
+from datetime import datetime
 
 # take environment variables from .env.
 load_dotenv()
@@ -13,6 +14,9 @@ access_token_secret = os.environ["ACCESS_TOKEN_SECRET"]
 bearer_token = os.environ["BEARER_TOKEN"]
 
 
+def get_datetime():
+    return datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+
 def twitter_api_authenticate():
     auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
     auth.set_access_token(access_token, access_token_secret)
@@ -22,7 +26,7 @@ def twitter_api_authenticate():
         api.verify_credentials()
     except Exception as error:
         print(
-            f"\n[ SimJowBot ] An error occurred while attempting to authenticate with the twitter API. Reason:\n{error}"
+            f"\n[SimJowBot] [{get_datetime()}] ERROR: Unable to authenticate with the twitter API. Reason:\n{error}"
         )
         return None
     else:
@@ -38,7 +42,7 @@ def get_tweet(twitterApi, tweetId):
             status = twitterApi.get_status(id=tweetId)
         except Exception as error:
             print(
-                f"\n[ SimJowBot ] An error occurred while attempting to get the twitter status with id={tweetId}. Reason:\n{error}"
+                f"\n[SimJowBot] [{get_datetime()}] ERROR: Unable to get the twitter status with id={tweetId}. Reason:\n{error}"
             )
         else:
             userName = status.user.name
@@ -55,13 +59,12 @@ def post_tweet(twitterApi, tweetText):
             twitterApi.update_status(status=tweetText)
         except Exception as error:
             print(
-                f"\n[ SimJowBot ] An error occurred while attempting to update the twitter status. Reason:\n{error}"
+                f"\n[SimJowBot] [{get_datetime()}] ERROR: Unable to update the twitter status. Reason:\n{error}"
             )
         else:
             success = True
 
     return success
-
 
 class SimJowStream(tweepy.Stream):
     def __init__(self, consumer_key, consumer_secret, access_token,
@@ -70,13 +73,13 @@ class SimJowStream(tweepy.Stream):
                          access_token_secret)
         self.twitterApi = twitter_api_authenticate()
         self.myUser = self.twitterApi.get_user(screen_name="SimJow")
-        print(f"\n[ SimJowBot ] SimJow is running.")
+        print(f"\n[SimJowBot] [{get_datetime()}] SimJow is running.")
 
     # when a new tweet is posted on Twitter with your filtered specifications
     def on_status(self, status):
 
         print(
-            f"\n[ SimJowBot ] Found a matching tweet https://twitter.com/{status.user.screen_name}/status/{status.id} "
+            f"\n[SimJowBot] [{get_datetime()}] Found a matching tweet https://twitter.com/{status.user.screen_name}/status/{status.id} "
         )
 
         # If the found tweet is not a reply to another tweet
@@ -90,11 +93,11 @@ class SimJowStream(tweepy.Stream):
                     # Like the found tweet (status)
                     self.like(status)
                 else:
-                    print("[ SimJowBot ] ERROR: User is blocked.")
+                    print(f"[SimJowBot] [{get_datetime()}] ERROR: User is blocked.")
             else:
-                print("[ SimJowBot ] ERROR: It's me!")
+                print(f"[SimJowBot] [{get_datetime()}] ERROR: It's me!")
         else:
-            print("[ SimJowBot ] ERROR: The tweet is a reply.")
+            print(f"[SimJowBot] [{get_datetime()}] ERROR: The tweet is a reply.")
 
     def retweet(self, status):
         try:
@@ -103,10 +106,10 @@ class SimJowStream(tweepy.Stream):
         # Some basic error handling. Will print out why retweet failed, into your terminal.
         except Exception as error:
             print(
-                f"[ SimJowBot ] ERROR: Retweet was not successful. Reason:\n{error}"
+                f"[SimJowBot] [{get_datetime()}] ERROR: Retweet was not successful. Reason:\n{error}"
             )
         else:
-            print("[ SimJowBot ] Retweeted successfully.")
+            print(f"[SimJowBot] [{get_datetime()}] Retweeted successfully.")
 
     def like(self, status):
         try:
@@ -115,10 +118,10 @@ class SimJowStream(tweepy.Stream):
         # Some basic error handling. Will print out why favorite failed, into your terminal.
         except Exception as error:
             print(
-                f"[ SimJowBot ] ERROR: Favorite was not successful. Reason:\n{error}"
+                f"[SimJowBot] [{get_datetime()}] ERROR: Favorite was not successful. Reason:\n{error}"
             )
         else:
-            print("[ SimJowBot ] Favorited successfully.")
+            print(f"[SimJowBot] [{get_datetime()}] Favorited successfully.")
 
     def is_a_reply(self, status):
         if hasattr(status, "retweeted_status"):
