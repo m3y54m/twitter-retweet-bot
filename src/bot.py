@@ -128,10 +128,10 @@ class SimJowStream(tweepy.Stream):
             # Check the original tweet if it was a retweet
             originalStatus = self.twitterApi.get_status(
                 id=status.retweeted_status.id)
-            return originalStatus.in_reply_to_status_id
+            return originalStatus.in_reply_to_status_id is not None
         else:
             # Check the tweet itself
-            return status.in_reply_to_status_id
+            return status.in_reply_to_status_id is not None
 
     def is_user_blocked(self, status):
 
