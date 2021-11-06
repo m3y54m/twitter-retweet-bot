@@ -127,24 +127,30 @@ class SimJowStream(tweepy.Stream):
             # Check the original tweet if it was a retweet
             originalStatus = self.twitterApi.get_status(
                 id=status.retweeted_status.id)
-            
+
             isReply = originalStatus.in_reply_to_status_id is not None
             isAuthorBlocked = originalStatus.user.id in blockedIdsList
-            isAutherMyself = originalStatus.user.screen_name == self.myUser.screen_name
+            isAuthorMyself = originalStatus.user.screen_name == self.myUser.screen_name
         else:
             # Check the tweet itself
             isReply = status.in_reply_to_status_id is not None
             isAuthorBlocked = status.user.id in blockedIdsList
-            isAutherMyself = status.user.screen_name == self.myUser.screen_name
+            isAuthorMyself = status.user.screen_name == self.myUser.screen_name
 
         if isReply:
-            print(f"[SimJowBot] [{get_datetime()}] [WARN] Tweet is not suitable. Reason: It is a reply.")
+            print(
+                f"[SimJowBot] [{get_datetime()}] [WARN] Tweet is not suitable. Reason: It is a reply."
+            )
             return False
         elif isAuthorBlocked:
-            print(f"[SimJowBot] [{get_datetime()}] [WARN] Tweet is not suitable. Reason: Author is blocked.")
+            print(
+                f"[SimJowBot] [{get_datetime()}] [WARN] Tweet is not suitable. Reason: Author is blocked."
+            )
             return False
-        elif isAutherMyself:
-            print(f"[SimJowBot] [{get_datetime()}] [WARN] Tweet is not suitable. Reason: Author is myself.")
+        elif isAuthorMyself:
+            print(
+                f"[SimJowBot] [{get_datetime()}] [WARN] Tweet is not suitable. Reason: Author is myself."
+            )
             return False
         else:
             return True
