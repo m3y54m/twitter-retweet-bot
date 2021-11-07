@@ -28,9 +28,8 @@ if __name__ == "__main__":
         start_server_thread()
 
         # create a tweepy Stream object for real time filtering of latest posted tweets
-        stream = SimJowStream(
-            consumer_key, consumer_secret, access_token, access_token_secret
-        )
+        stream = SimJowStream(consumer_key, consumer_secret, access_token,
+                              access_token_secret)
 
         # To keep the bot running even if there is an error
         while True:
@@ -41,4 +40,3 @@ if __name__ == "__main__":
                 print(
                     f"\n[SimJowBot] [{get_datetime()}] [ERROR] Something is wrong with tweets stream. Reason:\n{error}"
                 )
-                

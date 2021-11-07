@@ -122,6 +122,7 @@ class SimJowStream(tweepy.Stream):
     def is_suitable_to_retweet(self, status):
 
         blockedIdsList = self.twitterApi.get_blocked_ids()
+        mutedIdsList = self.twitterApi.get_muted_ids()
 
         if hasattr(status, "retweeted_status"):
             # Check the original tweet if it was a retweet
@@ -130,11 +131,13 @@ class SimJowStream(tweepy.Stream):
 
             isReply = originalStatus.in_reply_to_status_id is not None
             isAuthorBlocked = originalStatus.user.id in blockedIdsList
+            isAuthorMuted = originalStatus.user.id in mutedIdsList
             isAuthorMyself = originalStatus.user.screen_name == self.myUser.screen_name
         else:
             # Check the tweet itself
             isReply = status.in_reply_to_status_id is not None
             isAuthorBlocked = status.user.id in blockedIdsList
+            isAuthorMuted = status.user.id in mutedIdsList
             isAuthorMyself = status.user.screen_name == self.myUser.screen_name
 
         if isReply:
@@ -145,6 +148,11 @@ class SimJowStream(tweepy.Stream):
         elif isAuthorBlocked:
             print(
                 f"[SimJowBot] [{get_datetime()}] [WARN] Tweet is not suitable. Reason: Author is blocked."
+            )
+            return False
+        elif isAuthorMuted:
+            print(
+                f"[SimJowBot] [{get_datetime()}] [WARN] Tweet is not suitable. Reason: Author is muted."
             )
             return False
         elif isAuthorMyself:
