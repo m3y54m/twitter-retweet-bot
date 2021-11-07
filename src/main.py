@@ -31,5 +31,14 @@ if __name__ == "__main__":
         stream = SimJowStream(
             consumer_key, consumer_secret, access_token, access_token_secret
         )
-        # start filtering the twitter stream in a loop
-        stream.filter(track=trackList, languages=["fa"])
+
+        # To keep the bot running even if there is an error
+        while True:
+            try:
+                # start filtering the twitter stream in a loop
+                stream.filter(track=trackList, languages=["fa"])
+            except Exception as error:
+                print(
+                    f"\n[SimJowBot] [{get_datetime()}] [ERROR] Something is wrong with tweets stream. Reason:\n{error}"
+                )
+                
