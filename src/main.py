@@ -33,6 +33,9 @@ if __name__ == "__main__":
 
         # To keep the bot running even if there is an error
         while True:
+
+            print(f"\n[SimJowBot] [{get_datetime()}] [INFO] Stream filtering has started.")
+
             try:
                 # start filtering the twitter stream in a loop
                 stream.filter(track=trackList, languages=["fa"])
