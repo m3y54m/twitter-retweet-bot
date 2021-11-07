@@ -8,13 +8,13 @@ TRACK_JSON_PATH = SRC_PATH.joinpath("track.json")
 
 if __name__ == "__main__":
 
-    with open(TRACK_JSON_PATH, "r") as tracksJson:
+    with open(TRACK_JSON_PATH, "r") as trackJson:
 
-        tracks = json.load(tracksJson)
+        trackDic = json.load(trackJson)
 
-        keywordsList = tracks["keywords"]
-        hashtagsList = tracks["hashtags"]
-        mentionsList = tracks["mentions"]
+        keywordsList = trackDic["keywords"]
+        hashtagsList = trackDic["hashtags"]
+        mentionsList = trackDic["mentions"]
 
         trackList = []
         # Add keywords to track list
