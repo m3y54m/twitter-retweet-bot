@@ -75,7 +75,7 @@ class SimJowStream(tweepy.Stream):
                          access_token_secret)
         self.twitterApi = twitter_api_authenticate()
         self.myUser = self.twitterApi.get_user(screen_name="SimJow")
-        print(f"\n[SimJowBot] [{get_datetime()}] [INFO] Initialized the Twitter stream monitoring.")
+        print(f"\n[SimJowBot] [{get_datetime()}] [INFO] Initialized the Twitter stream monitoring agent.")
 
     # when a new tweet is posted on Twitter with your filtered specifications
     def on_status(self, status):
