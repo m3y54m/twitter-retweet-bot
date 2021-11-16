@@ -16,14 +16,13 @@ app = Flask(__name__)
 def home():
     twitterApi = bot.twitter_api_authenticate()
     userName, text = bot.get_tweet(twitterApi, 20)
-    return f"{userName}: {text}"
+    return Response(f"{userName}: {text}", mimetype="text/plain")
 
 
 # Wake up my bot
 @app.route("/wakeup")
-def get_text():
-    content = "I'm alive!"
-    return Response(content, mimetype="text/plain")
+def wakeup():
+    return Response("👀", mimetype="text/plain")
 
 
 def run():
