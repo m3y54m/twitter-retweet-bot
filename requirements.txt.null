@@ -1,4 +1,0 @@
-python-dotenv>=0.19.1
-tweepy==4.1.0
-Flask>=2.0.2
-gunicorn
