@@ -75,7 +75,9 @@ class SimJowStream(tweepy.Stream):
                          access_token_secret)
         self.twitterApi = twitter_api_authenticate()
         self.myUser = self.twitterApi.get_user(screen_name="SimJow")
-        print(f"\n[SimJowBot] [{get_datetime()}] [INFO] Initialized the Twitter stream monitoring agent.")
+        print(
+            f"\n[SimJowBot] [{get_datetime()}] [INFO] Initialized the Twitter stream monitoring agent."
+        )
 
     # when a new tweet is posted on Twitter with your filtered specifications
     def on_status(self, status):
@@ -133,12 +135,14 @@ class SimJowStream(tweepy.Stream):
             isAuthorBlocked = originalStatus.user.id in blockedIdsList
             isAuthorMuted = originalStatus.user.id in mutedIdsList
             isAuthorMyself = originalStatus.user.screen_name == self.myUser.screen_name
+            isRetweetedByMyself = status.user.screen_name == self.myUser.screen_name
         else:
             # Check the tweet itself
             isReply = status.in_reply_to_status_id is not None
             isAuthorBlocked = status.user.id in blockedIdsList
             isAuthorMuted = status.user.id in mutedIdsList
             isAuthorMyself = status.user.screen_name == self.myUser.screen_name
+            isRetweetedByMyself = False
 
         if isReply:
             print(
@@ -158,6 +162,11 @@ class SimJowStream(tweepy.Stream):
         elif isAuthorMyself:
             print(
                 f"[SimJowBot] [{get_datetime()}] [WARN] Tweet is not suitable. Reason: Author is myself."
+            )
+            return False
+        elif isRetweetedByMyself:
+            print(
+                f"[SimJowBot] [{get_datetime()}] [WARN] Tweet is not suitable. Reason: Retweeted previously by myself."
             )
             return False
         else:
