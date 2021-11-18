@@ -1,6 +1,6 @@
 import json
 import pathlib
-from bot import *
+import bot
 from server import start_server_thread
 
 SRC_PATH = pathlib.Path(__file__).parent.resolve()
@@ -28,18 +28,20 @@ if __name__ == "__main__":
         start_server_thread()
 
         # create a tweepy Stream object for real time filtering of latest posted tweets
-        stream = SimJowStream(consumer_key, consumer_secret, access_token,
-                              access_token_secret)
+        stream = bot.SimJowStream(bot.consumer_key, bot.consumer_secret,
+                                  bot.access_token, bot.access_token_secret)
 
         # To keep the bot running even if there is an error
         while True:
 
-            print(f"\n[SimJowBot] [{get_datetime()}] [INFO] Stream monitoring has started.")
+            print(
+                f"\n[SimJowBot] [{bot.get_datetime()}] [INFO] Stream monitoring has started."
+            )
 
             try:
                 # start filtering the twitter stream in a loop
                 stream.filter(track=trackList, languages=["fa"])
             except Exception as error:
                 print(
-                    f"\n[SimJowBot] [{get_datetime()}] [ERROR] Something is wrong with tweets stream. Reason:\n{error}"
+                    f"\n[SimJowBot] [{bot.get_datetime()}] [ERROR] Something is wrong with tweets stream. Reason:\n{error}"
                 )
