@@ -15,7 +15,7 @@ First you should (or it is recommended to) install [Poetry](https://python-poetr
 pip install poetry
 ```
 
-Then install all required packages based on `poetry.lock` file using this command:
+Then install all the required packages based on `poetry.lock` file using this command:
 
 ```console
 poetry install
@@ -23,9 +23,9 @@ poetry install
 
 ## Project Strcture
 
-This robot simply uses just keywords in `src/track.json` file to find its desired tweets.
+This robot simply uses keywords in `src/track.json` file to find desired tweets.
 
-The main source file which controls the behavior of robot is `src/bot.py`
+The main source file which controls the behavior of robot is `src/bot.py`.
 
 ## Development Resources
 
