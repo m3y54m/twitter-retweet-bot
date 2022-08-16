@@ -3,34 +3,31 @@
 [SimJow](https://twitter.com/SimJow) is a Twitter bot who looks for Persian tweets on the following topics and retweets them:
 
 - Electronics Hardware Design
+- Computer Hardware
 - Robotics
 - Embedded Systems
 
 ## Prerequisites
 
-```console
-pip install -r requirements.txt
-```
-
-## Twitter API Examples
+First you should (or it is recommended to) install [Poetry](https://python-poetry.org/) for package management:
 
 ```console
-curl -X GET -H "Authorization: Bearer <BEARER TOKEN>" "https://api.twitter.com/2/tweets/20"
+pip install poetry
 ```
+
+Then install all required packages based on `poetry.lock` file using this command:
 
 ```console
-curl -X GET -H "Authorization: Bearer <BEARER TOKEN>" "https://api.twitter.com/2/tweets/20?expansions=author_id"
+poetry install
 ```
 
-```console
-curl -X GET -H "Authorization: Bearer <BEARER TOKEN>" "https://api.twitter.com/2/tweets/440322224407314432?expansions=author_id,attachments.media_keys"
-```
+## Project Strcture
 
-```console
-curl -X GET -H "Authorization: Bearer <BEARER TOKEN>" "https://api.twitter.com/2/tweets/1028039268030210048?expansions=author_id,attachments.poll_ids"
-```
+This robot simply uses just keywords in `src/track.json` file to find its desired tweets.
 
-## Resources
+The main source file which controls the behavior of robot is `src/bot.py`
+
+## Development Resources
 
 - [Read key-value pairs from a .env file and set them as environment variables](https://github.com/theskumar/python-dotenv)
 - [Hello Tweepy](https://docs.tweepy.org/en/stable/getting_started.html)
