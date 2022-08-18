@@ -21,6 +21,12 @@ Then install all the required packages based on `poetry.lock` file using this co
 poetry install
 ```
 
+## Run the bot
+
+```console
+python src/main.py
+```
+
 ## Project Strcture
 
 This robot simply uses keywords in `src/track.json` file to find desired tweets.
