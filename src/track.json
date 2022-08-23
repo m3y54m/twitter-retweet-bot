@@ -260,6 +260,7 @@
         "I2C SPI",
         "MDIO",
         "MII",
+        "RMII",
         "SGMII",
         "RGMII",
         "پورت USB",
