@@ -53,3 +53,4 @@ The main source file which controls the behavior of robot is `src/bot.py`.
 - [Filter realtime Tweets](https://developer.twitter.com/en/docs/twitter-api/v1/tweets/filter-realtime/guides/basic-stream-parameters)
 - [Building a Discord Bot with Python and Repl.it](https://www.codementor.io/@garethdwyer/building-a-discord-bot-with-python-and-repl-it-miblcwejz#keeping-our-bot-alive)
 - [GitHub Webhooks](https://docs.github.com/en/developers/webhooks-and-events/webhooks)
+- [Verify GitHub webhook request sha256 in PHP](https://gist.github.com/mahdyar/711beee9fec9cab6bb2f6e48d061d077)
