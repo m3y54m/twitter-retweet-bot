@@ -3,9 +3,9 @@
 [SimJow](https://twitter.com/SimJow) is a Twitter bot who looks for Persian tweets on the following topics and retweets them:
 
 - Electronics Hardware Design
+- Embedded Systems
 - Computer Hardware
 - Robotics
-- Embedded Systems
 
 ## Prerequisites
 
