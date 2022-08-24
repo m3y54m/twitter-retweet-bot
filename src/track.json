@@ -365,7 +365,8 @@
         "U8g2",
         "U8glib",
         "KS0108",
-        "OLED"
+        "OLED",
+        "RTL-SDR"
     ],
     "hashtags": [
         "#الکترونیک",
