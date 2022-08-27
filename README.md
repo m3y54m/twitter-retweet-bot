@@ -21,6 +21,12 @@ Then install all the required packages based on `poetry.lock` file using this co
 poetry install
 ```
 
+To update all packages use this command:
+
+```console
+poetry update
+```
+
 ## Run the bot
 
 ```console
