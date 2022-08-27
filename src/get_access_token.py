@@ -9,7 +9,8 @@ load_dotenv()
 consumer_key = os.environ.get("CONSUMER_KEY")
 consumer_secret = os.environ.get("CONSUMER_SECRET")
 
-auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
+# 3-legged OAuth
+auth = tweepy.OAuthHandler(consumer_key, consumer_secret, callback="oob")
 auth.secure = True
 auth_url = auth.get_authorization_url()
 

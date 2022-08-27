@@ -54,3 +54,5 @@ The main source file which controls the behavior of robot is `src/bot.py`.
 - [Building a Discord Bot with Python and Repl.it](https://www.codementor.io/@garethdwyer/building-a-discord-bot-with-python-and-repl-it-miblcwejz#keeping-our-bot-alive)
 - [GitHub Webhooks](https://docs.github.com/en/developers/webhooks-and-events/webhooks)
 - [Verify GitHub webhook request sha256 in PHP](https://gist.github.com/mahdyar/711beee9fec9cab6bb2f6e48d061d077)
+- [Stream encountered HTTP error: 403](https://stackoverflow.com/questions/70031766/receiving-stream-encountered-http-error-403-when-using-twitter-api-what-is-c)
+- [PIN-based authorization](https://developer.twitter.com/en/docs/authentication/oauth-1-0a/pin-based-oauth)
