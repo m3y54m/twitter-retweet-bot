@@ -44,13 +44,13 @@ def twitter_api_authenticate_v2():
                          wait_on_rate_limit=True)
 
 
-def get_tweet(twitterApi, tweetId):
+def get_tweet(twitterClient, tweetId):
     userName = None
     tweetText = None
 
-    if twitterApi:
+    if twitterClient:
         try:
-            status = twitterApi.get_status(id=tweetId)
+            status = twitterClient.get_status(id=tweetId)
         except Exception as error:
             print(
                 f"\n[SimJowBot] [{get_datetime()}] [ERROR] Unable to get the twitter status with id={tweetId}. Reason:\n{error}"
@@ -83,12 +83,12 @@ def get_tweet_v2(client, tweetId):
     return userName, tweetText
 
 
-def post_tweet(twitterApi, tweetText):
+def post_tweet(twitterClient, tweetText):
     success = False
 
-    if twitterApi:
+    if twitterClient:
         try:
-            twitterApi.update_status(status=tweetText)
+            twitterClient.update_status(status=tweetText)
         except Exception as error:
             print(
                 f"\n[SimJowBot] [{get_datetime()}] [ERROR] Unable to update the twitter status. Reason:\n{error}"
@@ -100,32 +100,38 @@ def post_tweet(twitterApi, tweetText):
 
 
 class SimJowStream(tweepy.StreamingClient):
-    def __init__(self, bearer_token):
-        super().__init__(bearer_token)
-        self.twitterApi = twitter_api_authenticate_v2()
-        self.myUser = self.twitterApi.get_user(username="SimJow")
+    def __init__(self, bearer_token, wait_on_rate_limit):
+        super().__init__(bearer_token=bearer_token,
+                         wait_on_rate_limit=wait_on_rate_limit)
+        self.twitterClient = twitter_api_authenticate_v2()
+        self.myUser = self.twitterClient.get_user(username="SimJow",
+                                                  user_auth=True)
         print(
             f"\n[SimJowBot] [{get_datetime()}] [INFO] Initialized the Twitter stream monitoring agent."
         )
 
     # when a new tweet is posted on Twitter with your filtered specifications
-    def on_status(self, status):
+    def on_response(self, response):
+
+        # print(response.data.id)
+        # tweetText = tweet.data.text
+        # userName = tweet.includes["users"][0].name
 
         print(
-            f"\n[SimJowBot] [{get_datetime()}] [INFO] Found a matching tweet https://twitter.com/{status.user.screen_name}/status/{status.id} "
-        )
+            f"\n[SimJowBot] [{get_datetime()}] [INFO] Found a matching tweet https://twitter.com/{response.includes['users'][0].username}/status/{response.data.id} "
+       )
 
-        # If the found tweet is suitable to retweet
-        if self.is_suitable_to_retweet(status):
-            # Retweet the found tweet (status)
-            self.retweet(status)
-            # Like the found tweet (status)
-            self.like(status)
+        # # If the found tweet is suitable to retweet
+        # if self.is_suitable_to_retweet(status):
+        #     # Retweet the found tweet (status)
+        #     self.retweet(status)
+        #     # Like the found tweet (status)
+        #     self.like(status)
 
     def retweet(self, status):
         try:
             # Retweet the tweet
-            self.twitterApi.retweet(status.id)
+            self.twitterClient.retweet(status.id)
         # Some basic error handling. Will print out why retweet failed, into your terminal.
         except Exception as error:
             print(
@@ -139,7 +145,7 @@ class SimJowStream(tweepy.StreamingClient):
     def like(self, status):
         try:
             # Like the tweet
-            self.twitterApi.create_favorite(status.id)
+            self.twitterClient.create_favorite(status.id)
         # Some basic error handling. Will print out why favorite failed, into your terminal.
         except Exception as error:
             print(
@@ -152,12 +158,12 @@ class SimJowStream(tweepy.StreamingClient):
 
     def is_suitable_to_retweet(self, status):
 
-        blockedIdsList = self.twitterApi.get_blocked_ids()
-        mutedIdsList = self.twitterApi.get_muted_ids()
+        blockedIdsList = self.twitterClient.get_blocked_ids()
+        mutedIdsList = self.twitterClient.get_muted_ids()
 
         if hasattr(status, "retweeted_status"):
             # Check the original tweet if it was a retweet
-            originalStatus = self.twitterApi.get_status(
+            originalStatus = self.twitterClient.get_status(
                 id=status.retweeted_status.id)
 
             isReply = originalStatus.in_reply_to_status_id is not None
