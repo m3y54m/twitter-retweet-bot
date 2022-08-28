@@ -24,40 +24,46 @@ if __name__ == "__main__":
         # Add mentions to track list
         # trackList.extend(mentionsList)
 
+        hashtagsString = ' '.join(f'"{item}"' for item in hashtagsList)
+        
+
+        print(hashtagsString)
+        print(len(hashtagsString))
+
         # keep the bot running in replit
         start_server_thread()
 
-        # create a tweepy Stream object for real time filtering of latest posted tweets
-        streamClient = bot.SimJowStream(bot.bearer_token, True)
+        # # create a tweepy Stream object for real time filtering of latest posted tweets
+        # streamClient = bot.SimJowStream(bot.bearer_token, True)
 
-        # Get a list of all rules
-        rules = streamClient.get_rules().data
-        ids = []
-        if (rules):
-            # Create the list of rule ids
-            for rule in rules:
-                ids.append(rule.id)
-            # Delete all rules
-            streamClient.delete_rules(ids)
+        # # Get a list of all rules
+        # rules = streamClient.get_rules().data
+        # ids = []
+        # if (rules):
+        #     # Create the list of rule ids
+        #     for rule in rules:
+        #         ids.append(rule.id)
+        #     # Delete all rules
+        #     streamClient.delete_rules(ids)
 
-        streamRuleString = '("الکترونیک" OR @SimJow) -is:retweet -is:reply -from:SimJow -retweets_of:SimJow'
-        streamRule = bot.tweepy.StreamRule(streamRuleString)
-        streamClient.add_rules(streamRule)
+        # streamRuleString = f'"ایران در" lang:fa -is:retweet -is:reply -from:SimJow -retweets_of:SimJow'
+        # streamRule = bot.tweepy.StreamRule(streamRuleString)
+        # streamClient.add_rules(streamRule)
 
-        # To keep the bot running even if there is an error
-        while True:
+        # # To keep the bot running even if there is an error
+        # while True:
 
-            print(
-                f"\n[SimJowBot] [{bot.get_datetime()}] [INFO] Stream monitoring has started."
-            )
+        #     print(
+        #         f"\n[SimJowBot] [{bot.get_datetime()}] [INFO] Stream monitoring has started."
+        #     )
 
-            try:
-                # start filtering the twitter stream in a loop
-                streamClient.filter(
-                    expansions=["author_id"],
-                    user_fields=["username"],
-                )
-            except Exception as error:
-                print(
-                    f"\n[SimJowBot] [{bot.get_datetime()}] [ERROR] Something is wrong with tweets stream. Reason:\n{error}"
-                )
+        #     try:
+        #         # start filtering the twitter stream in a loop
+        #         streamClient.filter(
+        #             expansions=["author_id"],
+        #             user_fields=["username"],
+        #         )
+        #     except Exception as error:
+        #         print(
+        #             f"\n[SimJowBot] [{bot.get_datetime()}] [ERROR] Something is wrong with tweets stream. Reason:\n{error}"
+        #         )

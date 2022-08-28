@@ -14,7 +14,7 @@ access_token = os.environ.get("ACCESS_TOKEN")
 access_token_secret = os.environ.get("ACCESS_TOKEN_SECRET")
 client_id = os.environ.get("CLIENT_ID")
 client_secret = os.environ.get("CLIENT_SECRET")
-
+bot_username = "SimJow"
 
 def get_datetime():
     return datetime.now().strftime('%Y-%m-%d %H:%M:%S')
@@ -104,7 +104,7 @@ class SimJowStream(tweepy.StreamingClient):
         super().__init__(bearer_token=bearer_token,
                          wait_on_rate_limit=wait_on_rate_limit)
         self.twitterClient = twitter_api_authenticate_v2()
-        self.myUser = self.twitterClient.get_user(username="SimJow",
+        self.myUser = self.twitterClient.get_user(username=bot_username,
                                                   user_auth=True)
         print(
             f"\n[SimJowBot] [{get_datetime()}] [INFO] Initialized the Twitter stream monitoring agent."
