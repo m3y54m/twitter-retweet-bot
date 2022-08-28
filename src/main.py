@@ -30,7 +30,17 @@ if __name__ == "__main__":
         # create a tweepy Stream object for real time filtering of latest posted tweets
         streamClient = bot.SimJowStream(bot.bearer_token, True)
 
-        streamRuleString = '("الکترونیک" OR @SimJow) lang:fa -is:retweet -is:reply -from:SimJow -retweets_of:SimJow'
+        # Get a list of all rules
+        rules = streamClient.get_rules().data
+        ids = []
+        if (rules):
+            # Create the list of rule ids
+            for rule in rules:
+                ids.append(rule.id)
+            # Delete all rules
+            streamClient.delete_rules(ids)
+
+        streamRuleString = '("الکترونیک" OR @SimJow) -is:retweet -is:reply -from:SimJow -retweets_of:SimJow'
         streamRule = bot.tweepy.StreamRule(streamRuleString)
         streamClient.add_rules(streamRule)
 
