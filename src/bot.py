@@ -7,11 +7,13 @@ from datetime import datetime
 load_dotenv()
 
 # get environment variables for Twitter API
-consumer_key = os.environ["CONSUMER_KEY"]
-consumer_secret = os.environ["CONSUMER_SECRET"]
-access_token = os.environ["ACCESS_TOKEN"]
-access_token_secret = os.environ["ACCESS_TOKEN_SECRET"]
-bearer_token = os.environ["BEARER_TOKEN"]
+consumer_key = os.environ.get("CONSUMER_KEY")
+consumer_secret = os.environ.get("CONSUMER_SECRET")
+bearer_token = os.environ.get("BEARER_TOKEN")
+access_token = os.environ.get("ACCESS_TOKEN")
+access_token_secret = os.environ.get("ACCESS_TOKEN_SECRET")
+client_id = os.environ.get("CLIENT_ID")
+client_secret = os.environ.get("CLIENT_SECRET")
 
 
 def get_datetime():
@@ -34,6 +36,14 @@ def twitter_api_authenticate():
         return api
 
 
+def twitter_api_authenticate_v2():
+    return tweepy.Client(consumer_key=consumer_key,
+                         consumer_secret=consumer_secret,
+                         access_token=access_token,
+                         access_token_secret=access_token_secret,
+                         wait_on_rate_limit=True)
+
+
 def get_tweet(twitterApi, tweetId):
     userName = None
     tweetText = None
@@ -48,6 +58,27 @@ def get_tweet(twitterApi, tweetId):
         else:
             userName = status.user.name
             tweetText = status.text
+
+    return userName, tweetText
+
+
+def get_tweet_v2(client, tweetId):
+    userName = None
+    tweetText = None
+
+    if client:
+        try:
+            tweet = client.get_tweet(id=tweetId,
+                                     expansions=["author_id"],
+                                     user_fields=["name"],
+                                     user_auth=True)
+        except Exception as error:
+            print(
+                f"\n[SimJowBot] [{get_datetime()}] [ERROR] Unable to get the tweet with id={tweetId}. Reason:\n{error}"
+            )
+        else:
+            tweetText = tweet.data.text
+            userName = tweet.includes["users"][0].name
 
     return userName, tweetText
 
@@ -68,13 +99,11 @@ def post_tweet(twitterApi, tweetText):
     return success
 
 
-class SimJowStream(tweepy.Stream):
-    def __init__(self, consumer_key, consumer_secret, access_token,
-                 access_token_secret):
-        super().__init__(consumer_key, consumer_secret, access_token,
-                         access_token_secret)
-        self.twitterApi = twitter_api_authenticate()
-        self.myUser = self.twitterApi.get_user(screen_name="SimJow")
+class SimJowStream(tweepy.StreamingClient):
+    def __init__(self, bearer_token):
+        super().__init__(bearer_token)
+        self.twitterApi = twitter_api_authenticate_v2()
+        self.myUser = self.twitterApi.get_user(username="SimJow")
         print(
             f"\n[SimJowBot] [{get_datetime()}] [INFO] Initialized the Twitter stream monitoring agent."
         )

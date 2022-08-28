@@ -14,8 +14,8 @@ app = Flask(__name__)
 
 @app.route("/")
 def home():
-    twitterApi = bot.twitter_api_authenticate()
-    userName, text = bot.get_tweet(twitterApi, 20)
+    twitterClient = bot.twitter_api_authenticate_v2()
+    userName, text = bot.get_tweet_v2(twitterClient, 20)
     return Response(f"{userName}: {text}", mimetype="text/plain")
 
 

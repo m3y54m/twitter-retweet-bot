@@ -27,21 +27,21 @@ if __name__ == "__main__":
         # keep the bot running in replit
         start_server_thread()
 
-        # create a tweepy Stream object for real time filtering of latest posted tweets
-        stream = bot.SimJowStream(bot.consumer_key, bot.consumer_secret,
-                                  bot.access_token, bot.access_token_secret)
+        # # create a tweepy Stream object for real time filtering of latest posted tweets
+        # stream = bot.SimJowStream(bot.consumer_key, bot.consumer_secret,
+        #                           bot.access_token, bot.access_token_secret)
 
-        # To keep the bot running even if there is an error
-        while True:
+        # # To keep the bot running even if there is an error
+        # while True:
 
-            print(
-                f"\n[SimJowBot] [{bot.get_datetime()}] [INFO] Stream monitoring has started."
-            )
+        #     print(
+        #         f"\n[SimJowBot] [{bot.get_datetime()}] [INFO] Stream monitoring has started."
+        #     )
 
-            try:
-                # start filtering the twitter stream in a loop
-                stream.filter(track=trackList, languages=["fa"])
-            except Exception as error:
-                print(
-                    f"\n[SimJowBot] [{bot.get_datetime()}] [ERROR] Something is wrong with tweets stream. Reason:\n{error}"
-                )
+        #     try:
+        #         # start filtering the twitter stream in a loop
+        #         stream.filter(track=trackList, languages=["fa"])
+        #     except Exception as error:
+        #         print(
+        #             f"\n[SimJowBot] [{bot.get_datetime()}] [ERROR] Something is wrong with tweets stream. Reason:\n{error}"
+        #         )

@@ -62,3 +62,4 @@ The main source file which controls the behavior of robot is `src/bot.py`.
 - [Verify GitHub webhook request sha256 in PHP](https://gist.github.com/mahdyar/711beee9fec9cab6bb2f6e48d061d077)
 - [Stream encountered HTTP error: 403](https://stackoverflow.com/questions/70031766/receiving-stream-encountered-http-error-403-when-using-twitter-api-what-is-c)
 - [PIN-based authorization](https://developer.twitter.com/en/docs/authentication/oauth-1-0a/pin-based-oauth)
+- [Twitter API V2 Programming with Python and Tweepy](https://python.plainenglish.io/twitter-api-v2-programming-with-python-and-tweepy-f6487cd4bad9)
