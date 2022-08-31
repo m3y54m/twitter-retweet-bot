@@ -193,7 +193,6 @@
         "KiCad",
         "Orcad",
         "Cadence",
-        "Allegro",
         "M2M",
         "MQTT",
         "CoAp",
@@ -224,11 +223,6 @@
         "U-Boot",
         "Yocto",
         "Buildroot",
-        "Electronics",
-        "Electronic",
-        "Robotics",
-        "Robotic",
-        "Mechatronics",
         "Altium",
         "Altium Designer",
         "PCB طراحی",
@@ -372,6 +366,9 @@
     "hashtags": [
         "#الکترونیک",
         "#مدار_الکتریکی",
-        "#مدارهای_الکتریکی"],
-    "mentions": ["@SimJow"]
+        "#مدارهای_الکتریکی"
+    ],
+    "mentions": [
+        "@SimJow"
+    ]
 }
