@@ -7,12 +7,18 @@ SRC_PATH = pathlib.Path(__file__).parent.resolve()
 TRACK_JSON_PATH = SRC_PATH.joinpath("track.json")
 
 MAX_RULES_COUNT = 25
+MAX_RULE_LENGTH = 512
+
+
+def utf8len(s):
+    return len(s.encode('utf-8'))
+
 
 def create_rules_list(keywordsList, ruleMaxLength):
     keywordsListSize = len(keywordsList)
     ruleInitial = f"lang:fa -is:retweet -is:reply -from:{bot.bot_username} -retweets_of:{bot.bot_username} ("
     rule = ruleInitial
-    ruleSize = len(rule)
+    ruleSize = utf8len(rule)
     rulesList = []
     portionsCount = 0
 
@@ -25,11 +31,10 @@ def create_rules_list(keywordsList, ruleMaxLength):
             currentKeywordStringLast = f'"{keywordsList[i]}")'
             nextKeywordStringLast = f'"{keywordsList[i+1]}")'
 
-            ck = len(currentKeywordString)
-            ckl = len(currentKeywordStringLast)
-            nkl = len(nextKeywordStringLast)
-
-            ruleSize = len(rule)
+            ck = utf8len(currentKeywordString)
+            ckl = utf8len(currentKeywordStringLast)
+            nkl = utf8len(nextKeywordStringLast)
+            ruleSize = utf8len(rule)
 
             if i < keywordsListSize - 2:
                 if ruleSize + ck + nkl < ruleMaxLength:
@@ -40,10 +45,8 @@ def create_rules_list(keywordsList, ruleMaxLength):
                     rulesList.append(rule)
                     portionsCount += 1
                     rule = ruleInitial
-                elif (
-                    ruleSize + ck + nkl > ruleMaxLength
-                    and ruleSize + ckl <= ruleMaxLength
-                ):
+                elif (ruleSize + ck + nkl > ruleMaxLength
+                      and ruleSize + ckl <= ruleMaxLength):
                     rule += currentKeywordStringLast
                     rulesList.append(rule)
                     portionsCount += 1
@@ -54,7 +57,7 @@ def create_rules_list(keywordsList, ruleMaxLength):
                     rulesList.append(rule)
                     portionsCount += 1
                     # Finish
-    
+
     return rulesList
 
 
@@ -76,8 +79,9 @@ if __name__ == "__main__":
         # Add mentions to track list
         # trackList.extend(mentionsList)
 
-        rulesList = create_rules_list(trackList, 512)
+        rulesList = create_rules_list(trackList, MAX_RULE_LENGTH)
         rulesCount = len(rulesList)
+        print(rulesCount)
 
         if (rulesCount > MAX_RULES_COUNT):
             print(
@@ -100,11 +104,16 @@ if __name__ == "__main__":
             # Delete all rules
             streamClient.delete_rules(ids)
 
-        
         # Register the rules to the bot
-        for i in range(MAX_RULES_COUNT):
+        streamRulesList = []
+        print("\nRegistered rules list:\n")
+        for i in range(min(rulesCount, MAX_RULES_COUNT)):
             streamRule = bot.tweepy.StreamRule(rulesList[i])
-            streamClient.add_rules(streamRule)
+            rsp = streamClient.add_rules(add=streamRule, dry_run=True)
+            if (rsp.data is not None):
+                print(f"Rule #{i+1}\nID: {rsp.data[0].id}\nValue: {rsp.data[0].value}\n")
+            else:
+                print(f"Rule #{i+1}\nNot registered\n")
 
         # To keep the bot running even if there is an error
         while True:
