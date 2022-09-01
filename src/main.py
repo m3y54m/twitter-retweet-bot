@@ -11,7 +11,7 @@ MAX_RULE_LENGTH = 512
 
 
 def utf8len(s):
-    return len(s.encode('utf-8'))
+    return len(s)
 
 
 def create_rules_list(keywordsList, ruleMaxLength):
@@ -106,14 +106,25 @@ if __name__ == "__main__":
 
         # Register the rules to the bot
         streamRulesList = []
-        print("\nRegistered rules list:\n")
+        print("\nCreating rules...\n")
         for i in range(min(rulesCount, MAX_RULES_COUNT)):
             streamRule = bot.tweepy.StreamRule(rulesList[i])
-            rsp = streamClient.add_rules(add=streamRule, dry_run=True)
-            if (rsp.data is not None):
-                print(f"Rule #{i+1}\nID: {rsp.data[0].id}\nValue: {rsp.data[0].value}\n")
-            else:
-                print(f"Rule #{i+1}\nNot registered\n")
+            streamRulesList.append(streamRule)
+
+        rsp = streamClient.add_rules(add=streamRulesList, dry_run=True)
+        
+        if (rsp.meta is not None):
+            print(f"Rules created: {rsp.meta['summary']['created']}\nRules not created: {rsp.meta['summary']['not_created']}\nValid rules: {rsp.meta['summary']['valid']}\nInvalid rules: {rsp.meta['summary']['invalid']}\n")
+
+        if (rsp.data is not None):
+            print("\nDATA:")
+            print(rsp.data)
+
+        if (rsp.errors is not None):
+            print("\nERRORS:")
+            print(rsp.errors)
+
+        
 
         # To keep the bot running even if there is an error
         while True:
