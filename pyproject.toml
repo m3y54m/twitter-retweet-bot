@@ -9,6 +9,7 @@ python = "^3.8"
 tweepy = "^4.3.0"
 python-dotenv = "^0.19.1"
 Flask = "^2.0.2"
+waitress = "^2.1.2"
 
 [tool.poetry.dev-dependencies]
 

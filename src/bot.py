@@ -16,6 +16,7 @@ client_id = os.environ.get("CLIENT_ID")
 client_secret = os.environ.get("CLIENT_SECRET")
 bot_username = "SimJow"
 
+
 def get_datetime():
     return datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
@@ -99,13 +100,34 @@ def post_tweet(twitterClient, tweetText):
     return success
 
 
+def post_tweet_v2(twitterClient, tweetText):
+    success = False
+    id = 0
+
+    if twitterClient:
+        try:
+            response = twitterClient.create_tweet(test=tweetText)
+        except Exception as error:
+            print(
+                f"\n[SimJowBot] [{get_datetime()}] [ERROR] Unable to create the tweet. Reason:\n{error}"
+            )
+        else:
+            success = True
+            id = int(response.data['id'])
+
+    return success, id
+
+
 class SimJowStream(tweepy.StreamingClient):
     def __init__(self, bearer_token, wait_on_rate_limit):
         super().__init__(bearer_token=bearer_token,
                          wait_on_rate_limit=wait_on_rate_limit)
         self.twitterClient = twitter_api_authenticate_v2()
-        self.myUser = self.twitterClient.get_user(username=bot_username,
-                                                  user_auth=True)
+        rsp = self.twitterClient.get_user(username=bot_username,
+                                          user_auth=True)
+        self.botUserId = int(rsp.data.id)
+        self.botUsername = rsp.data.username
+
         print(
             f"\n[SimJowBot] [{get_datetime()}] [INFO] Initialized the Twitter stream monitoring agent."
         )
@@ -113,25 +135,26 @@ class SimJowStream(tweepy.StreamingClient):
     # when a new tweet is posted on Twitter with your filtered specifications
     def on_response(self, response):
 
-        # print(response.data.id)
-        # tweetText = tweet.data.text
-        # userName = tweet.includes["users"][0].name
+        if response.data is not None:
+            tweet = response.data
+            username = response.includes['users'][0].username
+            authorId = int(response.includes['users'][0].id)
 
-        print(
-            f"\n[SimJowBot] [{get_datetime()}] [INFO] Found a matching tweet https://twitter.com/{response.includes['users'][0].username}/status/{response.data.id} "
-       )
+            print(
+                f"\n[SimJowBot] [{get_datetime()}] [INFO] Found a matching tweet https://twitter.com/{username}/status/{tweet.id} "
+            )
 
-        # # If the found tweet is suitable to retweet
-        # if self.is_suitable_to_retweet(status):
-        #     # Retweet the found tweet (status)
-        #     self.retweet(status)
-        #     # Like the found tweet (status)
-        #     self.like(status)
+        # If the found tweet is suitable to retweet
+        if self.is_suitable_to_retweet(tweet, authorId):
+            # Retweet the found tweet
+            self.retweet(tweet)
+            # Like the found tweet
+            self.like(tweet)
 
-    def retweet(self, status):
+    def retweet(self, tweet):
         try:
             # Retweet the tweet
-            self.twitterClient.retweet(status.id)
+            self.twitterClient.retweet(tweet_id=tweet.id)
         # Some basic error handling. Will print out why retweet failed, into your terminal.
         except Exception as error:
             print(
@@ -142,49 +165,40 @@ class SimJowStream(tweepy.StreamingClient):
                 f"[SimJowBot] [{get_datetime()}] [INFO] Retweeted successfully."
             )
 
-    def like(self, status):
+    def like(self, tweet):
         try:
             # Like the tweet
-            self.twitterClient.create_favorite(status.id)
+            self.twitterClient.like(tweet_id=tweet.id)
         # Some basic error handling. Will print out why favorite failed, into your terminal.
         except Exception as error:
             print(
-                f"[SimJowBot] [{get_datetime()}] [ERROR] Favorite was not successful. Reason:\n{error}"
+                f"[SimJowBot] [{get_datetime()}] [ERROR] Like was not successful. Reason:\n{error}"
             )
         else:
-            print(
-                f"[SimJowBot] [{get_datetime()}] [INFO] Favorited successfully."
-            )
+            print(f"[SimJowBot] [{get_datetime()}] [INFO] Liked successfully.")
 
-    def is_suitable_to_retweet(self, status):
+    def is_suitable_to_retweet(self, tweet, authorId):
+        
+        isAuthorBlocked = False
+        isAuthorMuted = False
+        
+        rsp = self.twitterClient.get_blocked()
+        if rsp.data is not None:
+            blockedUsersList = rsp.data
+            for user in blockedUsersList:
+                if int(user.id) == authorId:
+                    isAuthorBlocked = True
+                    break
 
-        blockedIdsList = self.twitterClient.get_blocked_ids()
-        mutedIdsList = self.twitterClient.get_muted_ids()
+        rsp = self.twitterClient.get_muted()
+        if rsp.data is not None:
+            mutedUsersList = rsp.data
+            for user in mutedUsersList:
+                if int(user.id) == authorId:
+                    isAuthorMuted = True
+                    break
 
-        if hasattr(status, "retweeted_status"):
-            # Check the original tweet if it was a retweet
-            originalStatus = self.twitterClient.get_status(
-                id=status.retweeted_status.id)
-
-            isReply = originalStatus.in_reply_to_status_id is not None
-            isAuthorBlocked = originalStatus.user.id in blockedIdsList
-            isAuthorMuted = originalStatus.user.id in mutedIdsList
-            isAuthorMyself = originalStatus.user.screen_name == self.myUser.screen_name
-            isRetweetedByMyself = status.user.screen_name == self.myUser.screen_name
-        else:
-            # Check the tweet itself
-            isReply = status.in_reply_to_status_id is not None
-            isAuthorBlocked = status.user.id in blockedIdsList
-            isAuthorMuted = status.user.id in mutedIdsList
-            isAuthorMyself = status.user.screen_name == self.myUser.screen_name
-            isRetweetedByMyself = False
-
-        if isReply:
-            print(
-                f"[SimJowBot] [{get_datetime()}] [WARN] Tweet is not suitable. Reason: It is a reply."
-            )
-            return False
-        elif isAuthorBlocked:
+        if isAuthorBlocked:
             print(
                 f"[SimJowBot] [{get_datetime()}] [WARN] Tweet is not suitable. Reason: Author is blocked."
             )
@@ -192,16 +206,6 @@ class SimJowStream(tweepy.StreamingClient):
         elif isAuthorMuted:
             print(
                 f"[SimJowBot] [{get_datetime()}] [WARN] Tweet is not suitable. Reason: Author is muted."
-            )
-            return False
-        elif isAuthorMyself:
-            print(
-                f"[SimJowBot] [{get_datetime()}] [WARN] Tweet is not suitable. Reason: Author is myself."
-            )
-            return False
-        elif isRetweetedByMyself:
-            print(
-                f"[SimJowBot] [{get_datetime()}] [WARN] Tweet is not suitable. Reason: Retweeted previously by myself."
             )
             return False
         else:

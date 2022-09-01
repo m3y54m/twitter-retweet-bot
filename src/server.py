@@ -26,7 +26,8 @@ def wakeup():
 
 
 def run():
-    app.run(host='0.0.0.0', port=os.environ.get("PORT") or 8080)
+    from waitress import serve
+    serve(app, host="0.0.0.0", port=os.environ.get("PORT") or 8080)
 
 
 def start_server_thread():
