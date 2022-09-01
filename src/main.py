@@ -10,15 +10,11 @@ MAX_RULES_COUNT = 25
 MAX_RULE_LENGTH = 512
 
 
-def utf8len(s):
-    return len(s)
-
-
 def create_rules_list(keywordsList, ruleMaxLength):
     keywordsListSize = len(keywordsList)
     ruleInitial = f"lang:fa -is:retweet -is:reply -from:{bot.bot_username} -retweets_of:{bot.bot_username} ("
     rule = ruleInitial
-    ruleSize = utf8len(rule)
+    ruleSize = len(rule)
     rulesList = []
     portionsCount = 0
 
@@ -31,10 +27,10 @@ def create_rules_list(keywordsList, ruleMaxLength):
             currentKeywordStringLast = f'"{keywordsList[i]}")'
             nextKeywordStringLast = f'"{keywordsList[i+1]}")'
 
-            ck = utf8len(currentKeywordString)
-            ckl = utf8len(currentKeywordStringLast)
-            nkl = utf8len(nextKeywordStringLast)
-            ruleSize = utf8len(rule)
+            ck = len(currentKeywordString)
+            ckl = len(currentKeywordStringLast)
+            nkl = len(nextKeywordStringLast)
+            ruleSize = len(rule)
 
             if i < keywordsListSize - 2:
                 if ruleSize + ck + nkl < ruleMaxLength:
