@@ -65,3 +65,4 @@ The main source file which controls the behavior of robot is `src/bot.py`.
 - [Twitter API V2 Programming with Python and Tweepy](https://python.plainenglish.io/twitter-api-v2-programming-with-python-and-tweepy-f6487cd4bad9)
 - [POST /2/tweets/search/stream/rules](https://developer.twitter.com/en/docs/twitter-api/tweets/filtered-stream/api-reference/post-tweets-search-stream-rules#tab0)
 - [Invalid Rules Problem](https://developer.twitter.com/en/support/twitter-api/error-troubleshooting#invalid-rules)
+- [Deploy on Fly.io](https://fly.io/docs/getting-started/python/)
