@@ -98,7 +98,7 @@ if __name__ == "__main__":
             # Add mentions to track list
             includeList.extend(mentionsList)
 
-            print(includeList)
+            # print(includeList)
 
             # Create list of keywords should be excluded from twitter search query (rule)
             keywordsList = trackDic["exclude"]["keywords"]
@@ -111,7 +111,7 @@ if __name__ == "__main__":
             # Add mentions to track list
             excludeList.extend(mentionsList)
 
-            print(excludeList)
+            # print(excludeList)
 
         except Exception as error:
             print(
