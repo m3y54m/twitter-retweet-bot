@@ -33,11 +33,13 @@ def twitter_api_authenticate():
 
 
 def twitter_api_authenticate_v2():
-    return tweepy.Client(consumer_key=consumer_key,
-                         consumer_secret=consumer_secret,
-                         access_token=access_token,
-                         access_token_secret=access_token_secret,
-                         wait_on_rate_limit=True)
+    return tweepy.Client(
+        consumer_key=consumer_key,
+        consumer_secret=consumer_secret,
+        access_token=access_token,
+        access_token_secret=access_token_secret,
+        wait_on_rate_limit=True,
+    )
 
 
 def create_test_tweet_v2(client):
@@ -46,6 +48,6 @@ def create_test_tweet_v2(client):
 
 
 client = twitter_api_authenticate_v2()
-#print(client.get_user(username="twitter"))
+# print(client.get_user(username="twitter"))
 # Post a test Tweet
-#create_test_tweet_v2(client)
+# create_test_tweet_v2(client)

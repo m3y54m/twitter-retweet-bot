@@ -18,7 +18,7 @@ bot_username = "SimJow"
 
 
 def get_datetime():
-    return datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
 
 def twitter_api_authenticate():
@@ -38,11 +38,13 @@ def twitter_api_authenticate():
 
 
 def twitter_api_authenticate_v2():
-    return tweepy.Client(consumer_key=consumer_key,
-                         consumer_secret=consumer_secret,
-                         access_token=access_token,
-                         access_token_secret=access_token_secret,
-                         wait_on_rate_limit=True)
+    return tweepy.Client(
+        consumer_key=consumer_key,
+        consumer_secret=consumer_secret,
+        access_token=access_token,
+        access_token_secret=access_token_secret,
+        wait_on_rate_limit=True,
+    )
 
 
 def get_tweet(twitterClient, tweetId):
@@ -69,10 +71,12 @@ def get_tweet_v2(client, tweetId):
 
     if client:
         try:
-            tweet = client.get_tweet(id=tweetId,
-                                     expansions=["author_id"],
-                                     user_fields=["name"],
-                                     user_auth=True)
+            tweet = client.get_tweet(
+                id=tweetId,
+                expansions=["author_id"],
+                user_fields=["name"],
+                user_auth=True,
+            )
         except Exception as error:
             print(
                 f"\n[SimJowBot] [{get_datetime()}] [ERROR] Unable to get the tweet with id={tweetId}. Reason:\n{error}"
@@ -113,18 +117,18 @@ def post_tweet_v2(twitterClient, tweetText):
             )
         else:
             success = True
-            id = int(response.data['id'])
+            id = int(response.data["id"])
 
     return success, id
 
 
 class SimJowStream(tweepy.StreamingClient):
     def __init__(self, bearer_token, wait_on_rate_limit):
-        super().__init__(bearer_token=bearer_token,
-                         wait_on_rate_limit=wait_on_rate_limit)
+        super().__init__(
+            bearer_token=bearer_token, wait_on_rate_limit=wait_on_rate_limit
+        )
         self.twitterClient = twitter_api_authenticate_v2()
-        rsp = self.twitterClient.get_user(username=bot_username,
-                                          user_auth=True)
+        rsp = self.twitterClient.get_user(username=bot_username, user_auth=True)
         self.botUserId = int(rsp.data.id)
         self.botUsername = rsp.data.username
 
@@ -137,8 +141,8 @@ class SimJowStream(tweepy.StreamingClient):
 
         if response.data is not None:
             tweet = response.data
-            username = response.includes['users'][0].username
-            authorId = int(response.includes['users'][0].id)
+            username = response.includes["users"][0].username
+            authorId = int(response.includes["users"][0].id)
 
             print(
                 f"\n[SimJowBot] [{get_datetime()}] [INFO] Found a matching tweet https://twitter.com/{username}/status/{tweet.id} "
@@ -161,9 +165,7 @@ class SimJowStream(tweepy.StreamingClient):
                 f"[SimJowBot] [{get_datetime()}] [ERROR] Retweet was not successful. Reason:\n{error}"
             )
         else:
-            print(
-                f"[SimJowBot] [{get_datetime()}] [INFO] Retweeted successfully."
-            )
+            print(f"[SimJowBot] [{get_datetime()}] [INFO] Retweeted successfully.")
 
     def like(self, tweet):
         try:
@@ -178,10 +180,10 @@ class SimJowStream(tweepy.StreamingClient):
             print(f"[SimJowBot] [{get_datetime()}] [INFO] Liked successfully.")
 
     def is_suitable_to_retweet(self, tweet, authorId):
-        
+
         isAuthorBlocked = False
         isAuthorMuted = False
-        
+
         rsp = self.twitterClient.get_blocked()
         if rsp.data is not None:
             blockedUsersList = rsp.data
