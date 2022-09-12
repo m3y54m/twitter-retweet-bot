@@ -27,6 +27,7 @@ def wakeup():
 
 def run():
     from waitress import serve
+
     serve(app, host="0.0.0.0", port=os.environ.get("PORT") or 8080)
 
 

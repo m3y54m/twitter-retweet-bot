@@ -15,13 +15,13 @@ First you should (or it is recommended to) install [Poetry](https://python-poetr
 pip install poetry
 ```
 
-Then install all the required packages based on `poetry.lock` file using this command:
+Install all the required packages based on `poetry.lock` using this command:
 
 ```console
 poetry install
 ```
 
-To update all packages use this command:
+To update all packages to their latest versions you can use this command:
 
 ```console
 poetry update
@@ -35,9 +35,36 @@ python src/main.py
 
 ## Project Strcture
 
-This robot simply uses keywords in `src/track.json` file to find desired tweets.
+### `src/track.json`
 
-The main source file which controls the behavior of robot is `src/bot.py`.
+This bot simply uses keywords in this file to find desired tweets.
+This file consists of two parts:
+- `include`: All keywords, hashtags, and mentions that should exist in the tweets bot is looking for.
+- `exclude`: All keywords, hashtags, and mentions that should **NOT** exist in the tweets.
+
+### `src/main.py`
+
+This is the entry point of the program. It Gets keywords from `src/track.json` and processes them and
+generates valid search rules for out Twitter bot. It also runs a Flask web server to monitor or control
+the bot's activity. Finally it runs the bot's main application.
+
+### `src/bot.py`
+
+This file defines the application and behavior of this Twitter bot.
+It is using Twitter API v2 StreamingClient to monitor Twitter live steam of tweets
+based on the rules defined for it.
+
+Currently the bot only likes and retweets the tweets that match the rules. 
+
+### `src/server.py`
+
+A Flask web server is run to monitor or control the bots activity.
+
+### `src/get_access_token.py`
+
+This file is a independent utility to generate user-specific access tokens for the bot's Twitter API app
+and the bot's functionality is not related to this file.
+
 
 ## Development Resources
 
@@ -65,3 +92,4 @@ The main source file which controls the behavior of robot is `src/bot.py`.
 - [Twitter API V2 Programming with Python and Tweepy](https://python.plainenglish.io/twitter-api-v2-programming-with-python-and-tweepy-f6487cd4bad9)
 - [POST /2/tweets/search/stream/rules](https://developer.twitter.com/en/docs/twitter-api/tweets/filtered-stream/api-reference/post-tweets-search-stream-rules#tab0)
 - [Invalid Rules Problem](https://developer.twitter.com/en/support/twitter-api/error-troubleshooting#invalid-rules)
+- [Deploy on Fly.io](https://fly.io/docs/getting-started/python/)
