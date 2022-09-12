@@ -27,6 +27,12 @@ To update all packages to their latest versions you can use this command:
 poetry update
 ```
 
+Convert `poetry.lock` to `requirements.txt`:
+
+```console
+poetry export -f requirements.txt --output requirements.txt
+```
+
 ## Run the bot
 
 ```console
