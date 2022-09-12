@@ -118,78 +118,78 @@ if __name__ == "__main__":
                 f"\n[SimJowBot] [{bot.get_datetime()}] [ERROR] Keywords list generation failed. Reason:\n{error}"
             )
 
-        # if len(includeList) != 0:
-        #     rulesList = create_rules_list(includeList, excludeList, MAX_RULE_LENGTH)
-        #     rulesCount = len(rulesList)
-        #     if rulesCount == 0:
-        #         raise Exception(
-        #             f"\n[SimJowBot] [{bot.get_datetime()}] [ERROR] No rule string is generated!"
-        #         )
-        #     print(f"Total rule strings generates: {rulesCount}\n")
-        #     for index, ruleStr in enumerate(rulesList):
-        #         print(f"Rule string {index+1}:\n{ruleStr}\n")
-        # else:
-        #     raise Exception(
-        #         f"\n[SimJowBot] [{bot.get_datetime()}] [ERROR] Keywords include list is empty."
-        #     )
+        if len(includeList) != 0:
+            rulesList = create_rules_list(includeList, excludeList, MAX_RULE_LENGTH)
+            rulesCount = len(rulesList)
+            if rulesCount == 0:
+                raise Exception(
+                    f"\n[SimJowBot] [{bot.get_datetime()}] [ERROR] No rule string is generated!"
+                )
+            print(f"Total rule strings generates: {rulesCount}\n")
+            for index, ruleStr in enumerate(rulesList):
+                print(f"Rule string {index+1}:\n{ruleStr}\n")
+        else:
+            raise Exception(
+                f"\n[SimJowBot] [{bot.get_datetime()}] [ERROR] Keywords include list is empty."
+            )
 
-        # if rulesCount > MAX_RULES_COUNT:
-        #     print(
-        #         f"\n[SimJowBot] [{bot.get_datetime()}] [WARNING] Number of required rules for the bot ({rulesCount}) is more than allowed ({MAX_RULES_COUNT})"
-        #     )
+        if rulesCount > MAX_RULES_COUNT:
+            print(
+                f"\n[SimJowBot] [{bot.get_datetime()}] [WARNING] Number of required rules for the bot ({rulesCount}) is more than allowed ({MAX_RULES_COUNT})"
+            )
 
-        # # keep the bot running in replit
-        # start_server_thread()
+        # keep the bot running in replit
+        start_server_thread()
 
-        # # create a tweepy Stream object for real time filtering of latest posted tweets
-        # streamClient = bot.SimJowStream(bot.bearer_token, True)
+        # create a tweepy Stream object for real time filtering of latest posted tweets
+        streamClient = bot.SimJowStream(bot.bearer_token, True)
 
-        # # Get a list of all rules registered on the bot's Twitter app
-        # rules = streamClient.get_rules().data
-        # ids = []
-        # if rules:
-        #     # Create the list of rule ids
-        #     for rule in rules:
-        #         ids.append(rule.id)
-        #     # Delete all rules
-        #     streamClient.delete_rules(ids)
+        # Get a list of all rules registered on the bot's Twitter app
+        rules = streamClient.get_rules().data
+        ids = []
+        if rules:
+            # Create the list of rule ids
+            for rule in rules:
+                ids.append(rule.id)
+            # Delete all rules
+            streamClient.delete_rules(ids)
 
-        # # Register the rules to the bot
-        # streamRulesList = []
-        # print("\nCreating rules...\n")
-        # for i in range(min(rulesCount, MAX_RULES_COUNT)):
-        #     streamRule = bot.tweepy.StreamRule(rulesList[i])
-        #     streamRulesList.append(streamRule)
+        # Register the rules to the bot
+        streamRulesList = []
+        print("\nCreating rules...\n")
+        for i in range(min(rulesCount, MAX_RULES_COUNT)):
+            streamRule = bot.tweepy.StreamRule(rulesList[i])
+            streamRulesList.append(streamRule)
 
-        # rsp = streamClient.add_rules(add=streamRulesList)
+        rsp = streamClient.add_rules(add=streamRulesList)
 
-        # if rsp.meta is not None:
-        #     print(
-        #         f"Rules created: {rsp.meta['summary']['created']}\nRules not created: {rsp.meta['summary']['not_created']}\nValid rules: {rsp.meta['summary']['valid']}\nInvalid rules: {rsp.meta['summary']['invalid']}\n"
-        #     )
+        if rsp.meta is not None:
+            print(
+                f"Rules created: {rsp.meta['summary']['created']}\nRules not created: {rsp.meta['summary']['not_created']}\nValid rules: {rsp.meta['summary']['valid']}\nInvalid rules: {rsp.meta['summary']['invalid']}\n"
+            )
 
-        # if rsp.data is not None:
-        #     print("\nDATA:")
-        #     print(rsp.data)
+        if rsp.data is not None:
+            print("\nDATA:")
+            print(rsp.data)
 
-        # if rsp.errors is not None:
-        #     print("\nERRORS:")
-        #     print(rsp.errors)
+        if rsp.errors is not None:
+            print("\nERRORS:")
+            print(rsp.errors)
 
-        # # To keep the bot running even if there is an error
-        # while True:
+        # To keep the bot running even if there is an error
+        while True:
 
-        #     print(
-        #         f"\n[SimJowBot] [{bot.get_datetime()}] [INFO] Stream monitoring has started."
-        #     )
+            print(
+                f"\n[SimJowBot] [{bot.get_datetime()}] [INFO] Stream monitoring has started."
+            )
 
-        #     try:
-        #         # start filtering the twitter stream in a loop
-        #         streamClient.filter(
-        #             expansions=["author_id"],
-        #             user_fields=["id", "username"],
-        #         )
-        #     except Exception as error:
-        #         print(
-        #             f"\n[SimJowBot] [{bot.get_datetime()}] [ERROR] Something is wrong with tweets stream. Reason:\n{error}"
-        #         )
+            try:
+                # start filtering the twitter stream in a loop
+                streamClient.filter(
+                    expansions=["author_id"],
+                    user_fields=["id", "username"],
+                )
+            except Exception as error:
+                print(
+                    f"\n[SimJowBot] [{bot.get_datetime()}] [ERROR] Something is wrong with tweets stream. Reason:\n{error}"
+                )
