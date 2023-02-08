@@ -1,11 +1,8 @@
-# SimJow Twitter Bot
+# Retweeter Bot with Twitter API V2
 
-[SimJow](https://twitter.com/SimJow) is a Twitter bot who looks for Persian tweets on the following topics and retweets them:
-
-- Electronics Hardware Design
-- Embedded Systems
-- Computer Hardware
-- Robotics
+This repository holds the source code of a bot that utilizes Twitter API V2.
+The bot will constantly search through the Twitter timeline for tweets containing
+your specified keywords, which can be edited in the `track.json` file.
 
 ## Prerequisites
 
