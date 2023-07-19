@@ -1,9 +1,9 @@
 # The command that runs the program. If the interpreter field is set, it will have priority and this run command will do nothing
-run = "python3 src/test_tweet.py"
+run = "python3 src/main.py"
 
 # The primary language of the repl. There can be others, though!
 language = "python3"
-entrypoint = "src/test_tweet.py"
+entrypoint = "src/main.py"
 # A list of globs that specify which files and directories should
 # be hidden in the workspace.
 hidden = ["venv", ".config", "**/__pycache__", "**/.mypy_cache", "**/*.pyc"]
@@ -46,7 +46,7 @@ support = true
   # How to start the debugger.
   [debugger.interactive]
   transport = "localhost:0"
-  startCommand = ["dap-python", "src/test_tweet.py"]
+  startCommand = ["dap-python", "src/main.py"]
 
     # How to communicate with the debugger.
     [debugger.interactive.integratedAdapter]
@@ -98,4 +98,4 @@ ignoredPackages = ["unit_tests"]
 requiredFiles = [".replit", "replit.nix", ".config", "venv"]
 
 [deployment]
-run = ["sh", "-c", "python3 src/test_tweet.py"]
+run = ["sh", "-c", "python3 src/main.py"]

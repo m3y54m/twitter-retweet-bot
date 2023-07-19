@@ -1,7 +1,7 @@
 import json
 import pathlib
 import time
-import bot
+import my_twitter_bot as bot
 from server import start_server_thread
 
 SRC_PATH = pathlib.Path(__file__).parent.resolve()
