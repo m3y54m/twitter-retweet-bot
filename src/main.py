@@ -1,5 +1,6 @@
 import json
 import pathlib
+import time
 import bot
 from server import start_server_thread
 
@@ -193,3 +194,6 @@ if __name__ == "__main__":
                 print(
                     f"\n[SimJowBot] [{bot.get_datetime()}] [ERROR] Something is wrong with tweets stream. Reason:\n{error}"
                 )
+
+            # delay for 20 seconds
+            time.sleep(20)

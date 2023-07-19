@@ -1,17 +1,16 @@
 [tool.poetry]
-name = "simjowbot"
+name = "python-template"
 version = "0.1.0"
 description = ""
-authors = ["m3y54m <<>>"]
+authors = ["Your Name <you@example.com>"]
 
 [tool.poetry.dependencies]
-python = "^3.8"
-tweepy = "^4.3.0"
-python-dotenv = "^0.19.1"
-Flask = "^2.0.2"
-waitress = "^2.1.2"
+python = ">=3.8.0,<3.9"
 
 [tool.poetry.dev-dependencies]
+debugpy = "^1.6.2"
+replit-python-lsp-server = {extras = ["yapf", "rope", "pyflakes"], version = "^1.5.9"}
+urllib3 = "1.26.15"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
