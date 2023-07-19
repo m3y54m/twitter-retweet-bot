@@ -28,7 +28,8 @@ MAX_RULE_LENGTH = 512
 
 def create_rules_list(keywordsList, ruleMaxLength):
     keywordsListSize = len(keywordsList)
-    ruleInitial = f"lang:fa -is:retweet -is:reply -from:{bot.bot_username} -retweets_of:{bot.bot_username} ("
+    #  ruleInitial = f"lang:fa -is:retweet -is:reply -from:{bot.bot_username} -retweets_of:{bot.bot_username} ("
+    ruleInitial = f"lang:fa ("
     rule = ruleInitial
     ruleSize = len(rule)
     rulesList = []
@@ -57,10 +58,8 @@ def create_rules_list(keywordsList, ruleMaxLength):
                     rulesList.append(rule)
                     portionsCount += 1
                     rule = ruleInitial
-                elif (
-                    ruleSize + ck + nkl > ruleMaxLength
-                    and ruleSize + ckl <= ruleMaxLength
-                ):
+                elif (ruleSize + ck + nkl > ruleMaxLength
+                      and ruleSize + ckl <= ruleMaxLength):
                     rule += currentKeywordStringLast
                     rulesList.append(rule)
                     portionsCount += 1
@@ -77,28 +76,32 @@ def create_rules_list(keywordsList, ruleMaxLength):
 
 with open(TRACK_JSON_PATH, "r", encoding="utf-8") as trackJson:
 
-    trackDic = json.load(trackJson)
+    # trackDic = json.load(trackJson)
 
-    keywordsList = trackDic["keywords"]
-    hashtagsList = trackDic["hashtags"]
-    mentionsList = trackDic["mentions"]
+    # keywordsList = trackDic["keywords"]
+    # hashtagsList = trackDic["hashtags"]
+    # mentionsList = trackDic["mentions"]
 
-    trackList = []
-    # Add keywords to track list
-    trackList.extend(keywordsList)
-    # Add hashtags to track list
-    trackList.extend(hashtagsList)
-    # Add mentions to track list
-    # trackList.extend(mentionsList)
+    # trackList = []
+    # # Add keywords to track list
+    # trackList.extend(keywordsList)
+    # # Add hashtags to track list
+    # trackList.extend(hashtagsList)
+    # # Add mentions to track list
+    # # trackList.extend(mentionsList)
 
-    rulesList = create_rules_list(trackList, MAX_RULE_LENGTH)
-    rulesCount = len(rulesList)
-    print(rulesCount)
+    # rulesList = create_rules_list(trackList, MAX_RULE_LENGTH)
+    # rulesCount = len(rulesList)
+    # print(rulesCount)
+
+    rulesList = [f'lang:fa -is:retweet "سلام"']
+    rulesCount = 1
 
     client = tweepy.Client(bearer_token)
 
     # Search Recent Tweets
-    start_time = "2022-09-01T15:25:00.000Z"
+    start_time = "2022-10-26T10:00:00.000Z"
+    end_time = "2022-10-26T15:45:00.000Z"
 
     for i in range(rulesCount):
         # This endpoint/method returns Tweets from the last seven days
@@ -109,6 +112,7 @@ with open(TRACK_JSON_PATH, "r", encoding="utf-8") as trackJson:
             expansions=["author_id"],
             user_fields=["id", "username"],
             start_time=start_time,
+            end_time=end_time,
             max_results=100,
         )
         # The method returns a Response object, a named tuple with data, includes,
