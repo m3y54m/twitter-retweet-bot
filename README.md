@@ -4,6 +4,8 @@ This repository holds the source code of a bot that utilizes Twitter API V2.
 The bot will constantly search through the Twitter timeline for tweets containing
 your specified keywords, which can be edited in the `track.json` file.
 
+**Note: Due to recent changes in Twitter Developer accounts, Free plan is not able to search tweets or retweet them. You should have a Basic or Pro account to use this bot.**
+
 ## Prerequisites
 
 First you should (or it is recommended to) install [Poetry](https://python-poetry.org/) for package management:

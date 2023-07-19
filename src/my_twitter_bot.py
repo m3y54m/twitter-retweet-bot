@@ -110,7 +110,7 @@ def post_tweet_v2(twitterClient, tweetText):
 
     if twitterClient:
         try:
-            response = twitterClient.create_tweet(test=tweetText)
+            response = twitterClient.create_tweet(text=tweetText)
         except Exception as error:
             print(
                 f"\n[SimJowBot] [{get_datetime()}] [ERROR] Unable to create the tweet. Reason:\n{error}"
