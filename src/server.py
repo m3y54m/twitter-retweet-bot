@@ -4,7 +4,7 @@ from flask import Response
 from dotenv import load_dotenv
 from threading import Thread
 
-import bot
+import my_twitter_bot as bot
 
 # take environment variables from .env.
 load_dotenv()

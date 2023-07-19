@@ -1,37 +1,39 @@
 # The command that runs the program. If the interpreter field is set, it will have priority and this run command will do nothing
-run = ["python3", "main.py"]
+run = "python3 src/test_tweet.py"
 
-entrypoint = "main.py"
+# The primary language of the repl. There can be others, though!
+language = "python3"
+entrypoint = "src/test_tweet.py"
 # A list of globs that specify which files and directories should
 # be hidden in the workspace.
 hidden = ["venv", ".config", "**/__pycache__", "**/.mypy_cache", "**/*.pyc"]
+modules = ["pyright-extended:v1-20230707-0c33b22"]
 
 # Specifies which nix channel to use when building the environment.
 [nix]
 channel = "stable-22_11"
 
-[[hints]]
-regex = "stderred: .+GLIBC.+not found"
-message = "The command `stderred` is known to cause issues. It's recommended you remove it from your .replit configuration."
-
 # The command to start the interpreter.
-[interpreter.command]
-args = [
-  "prybar-python3",
-  "-q",
-  "--ps1",
-  "\u0001\u001b[33m\u0002\u0001\u001b[00m\u0002 ",
-  "-i",
-]
-env = { LD_LIBRARY_PATH = "$PYTHON_LD_LIBRARY_PATH" }
+[interpreter]
+  [interpreter.command]
+  args = [
+    "stderred",
+    "--",
+    "prybar-python310",
+    "-q",
+    "--ps1",
+    "\u0001\u001b[33m\u0002\u0001\u001b[00m\u0002 ",
+    "-i",
+  ]
+  env = { LD_LIBRARY_PATH = "$PYTHON_LD_LIBRARY_PATH" }
 
 [env]
-VIRTUAL_ENV = "/home/runner/${REPL_SLUG}/venv"
+VIRTUAL_ENV = "${REPL_HOME}/venv"
 PATH = "${VIRTUAL_ENV}/bin"
-PYTHONPATH = "$PYTHONHOME/lib/python3.8:${VIRTUAL_ENV}/lib/python3.8/site-packages"
+PYTHONPATH = "$PYTHONHOME/lib/python3.10:${VIRTUAL_ENV}/lib/python3.10/site-packages"
 REPLIT_POETRY_PYPI_REPOSITORY = "https://package-proxy.replit.com/pypi/"
 MPLBACKEND = "TkAgg"
-POETRY_CACHE_DIR = "${HOME}/${REPL_SLUG}/.cache/pypoetry"
+POETRY_CACHE_DIR = "${REPL_HOME}/.cache/pypoetry"
 
 # Enable unit tests. This is only supported for a few languages.
 [unitTest]
@@ -44,7 +46,7 @@ support = true
   # How to start the debugger.
   [debugger.interactive]
   transport = "localhost:0"
-  startCommand = ["dap-python", "main.py"]
+  startCommand = ["dap-python", "src/test_tweet.py"]
 
     # How to communicate with the debugger.
     [debugger.interactive.integratedAdapter]
@@ -95,13 +97,5 @@ ignoredPackages = ["unit_tests"]
 [gitHubImport]
 requiredFiles = [".replit", "replit.nix", ".config", "venv"]
 
-[languages]
-
-[languages.python3]
-pattern = "**/*.py"
-
-[languages.python3.languageServer]
-start = "pylsp"
-
 [deployment]
-run = ["sh", "-c", "python3 main.py"]
+run = ["sh", "-c", "python3 src/test_tweet.py"]

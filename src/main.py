@@ -50,10 +50,8 @@ def create_rules_list(includeList, excludeList, ruleMaxLength):
                     rulesList.append(rule)
                     portionsCount += 1
                     rule = ruleInitial
-                elif (
-                    ruleSize + ck + nkl > ruleMaxLength
-                    and ruleSize + ckl <= ruleMaxLength
-                ):
+                elif (ruleSize + ck + nkl > ruleMaxLength
+                      and ruleSize + ckl <= ruleMaxLength):
                     rule += currentKeywordStringLast
                     rulesList.append(rule)
                     portionsCount += 1
@@ -120,7 +118,8 @@ if __name__ == "__main__":
             )
 
         if len(includeList) != 0:
-            rulesList = create_rules_list(includeList, excludeList, MAX_RULE_LENGTH)
+            rulesList = create_rules_list(includeList, excludeList,
+                                          MAX_RULE_LENGTH)
             rulesCount = len(rulesList)
             if rulesCount == 0:
                 raise Exception(

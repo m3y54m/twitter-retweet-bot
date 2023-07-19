@@ -17,7 +17,7 @@ bot_username = "SimJow"
 
 import json
 import pathlib
-import bot
+import my_twitter_bot as bot
 
 SRC_PATH = pathlib.Path(__file__).parent.resolve()
 TRACK_JSON_PATH = SRC_PATH.joinpath("track.json")
